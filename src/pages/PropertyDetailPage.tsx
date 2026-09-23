@@ -210,7 +210,7 @@ export const PropertyDetailPage: React.FC = () => {
   return (
     <div className="bg-[#F8F9F8] min-h-screen py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        
+
         {/* Breadcrumbs & Share */}
         <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-charcoal-700 font-medium">
           <div className="flex items-center space-x-2">
@@ -285,6 +285,15 @@ export const PropertyDetailPage: React.FC = () => {
                 ? `Plot Rate: ₹${property.pricePerSqYd.toLocaleString('en-IN')} / ${property.sizeUnit}`
                 : '100% Transparent Direct Developer Pricing'}
             </div>
+            <button
+              onClick={() => {
+                document.getElementById('enquiry-section')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="mt-3 w-full py-2.5 px-4 rounded-xl bg-forest-950 hover:bg-forest-900 text-gold-300 font-extrabold text-xs shadow border border-gold-500/40 transition-all flex items-center justify-center space-x-1.5"
+            >
+              <span>Book Free Site Visit Cab</span>
+              <span>↓</span>
+            </button>
           </div>
         </div>
 
@@ -340,9 +349,8 @@ export const PropertyDetailPage: React.FC = () => {
                 <button
                   key={idx}
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`relative w-24 h-16 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all ${
-                    activeImageIndex === idx ? 'border-gold-600 scale-105 shadow-md' : 'border-stone-300 opacity-80 hover:opacity-100'
-                  }`}
+                  className={`relative w-24 h-16 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all ${activeImageIndex === idx ? 'border-gold-600 scale-105 shadow-md' : 'border-stone-300 opacity-80 hover:opacity-100'
+                    }`}
                 >
                   <img src={img} alt="" className="w-full h-full object-cover" />
                 </button>
@@ -351,529 +359,333 @@ export const PropertyDetailPage: React.FC = () => {
           )}
         </div>
 
-        {/* Layout Grid: Details on Left, Sticky Enquiry on Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          
-          {/* Main Details Column */}
-          <div className="lg:col-span-8 space-y-10">
-            
-            {/* Quick Metrics Bar */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-white p-5 rounded-2xl border border-stone-300 shadow-luxury">
-              <div className="p-3 bg-[#F8FAF8] rounded-xl border border-stone-200">
-                <span className="text-[11px] font-bold text-charcoal-600 uppercase block">Category</span>
-                <span className="text-base font-extrabold text-forest-950 font-editorial">{property.category}</span>
-              </div>
-              <div className="p-3 bg-[#F8FAF8] rounded-xl border border-stone-200">
-                <span className="text-[11px] font-bold text-charcoal-600 uppercase block">Scheme Scale</span>
-                <span className="text-base font-extrabold text-forest-950 font-editorial">{property.tagline || 'Township'}</span>
-              </div>
-              <div className="p-3 bg-[#F8FAF8] rounded-xl border border-stone-200">
-                <span className="text-[11px] font-bold text-charcoal-600 uppercase block">Bank Loan</span>
-                <span className="text-base font-extrabold text-forest-950 font-editorial">Up to 80%</span>
-              </div>
-              <div className="p-3 bg-[#F8FAF8] rounded-xl border border-stone-200">
-                <span className="text-[11px] font-bold text-charcoal-600 uppercase block">Registry</span>
-                <span className="text-base font-extrabold text-forest-950 font-editorial">Instant Patta</span>
-              </div>
+        {/* Main Details & Architecture Showcase */}
+        <div className="space-y-10">
+
+          {/* Quick Metrics Bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-white p-5 rounded-2xl border border-stone-300 shadow-luxury">
+            <div className="p-3 bg-[#F8FAF8] rounded-xl border border-stone-200">
+              <span className="text-[11px] font-bold text-charcoal-600 uppercase block">Category</span>
+              <span className="text-base font-extrabold text-forest-950 font-editorial">{property.category}</span>
             </div>
-
-            {/* Description & Overview */}
-            <div className="bg-white p-6 sm:p-8 rounded-2xl border border-stone-300 shadow-luxury space-y-4">
-              <h3 className="text-xl sm:text-2xl font-bold font-editorial text-forest-950 border-b border-stone-200 pb-3">
-                Project Overview & Legal Profile
-              </h3>
-              <p className="text-sm sm:text-base text-charcoal-800 leading-relaxed font-normal">
-                {property.description}
-              </p>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-stone-200">
-                <div className="flex items-start space-x-2.5">
-                  <CheckCircle2 className="w-5 h-5 text-forest-800 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h5 className="text-xs font-bold text-forest-950">100% Clear Title & 90-A Sanctioned</h5>
-                    <p className="text-xs text-charcoal-600">Free from all legal disputes and agricultural caveats.</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-2.5">
-                  <CheckCircle2 className="w-5 h-5 text-forest-800 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h5 className="text-xs font-bold text-forest-950">Spot Bank Registry</h5>
-                    <p className="text-xs text-charcoal-600">Direct registration with pre-approved loans from SBI & HDFC.</p>
-                  </div>
-                </div>
-              </div>
+            <div className="p-3 bg-[#F8FAF8] rounded-xl border border-stone-200">
+              <span className="text-[11px] font-bold text-charcoal-600 uppercase block">Scheme Scale</span>
+              <span className="text-base font-extrabold text-forest-950 font-editorial">{property.tagline || 'Township'}</span>
             </div>
-
-            {/* 6-Point Project Highlights & Visual Architecture Showcase (Alternating Zigzag) */}
-            <div className="space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-3 border-b border-stone-200">
-                <div>
-                  <span className="text-xs font-extrabold uppercase tracking-widest text-gold-700 bg-gold-100 border border-gold-300 px-3 py-0.5 rounded-full inline-block mb-1">
-                    On-Site Reality & Master Planning
-                  </span>
-                  <h3 className="text-2xl sm:text-3xl font-bold font-editorial text-forest-950">
-                    Project Infrastructure & 6 Key Highlights
-                  </h3>
-                </div>
-                <p className="text-xs text-charcoal-600 max-w-sm sm:text-right">
-                  High-resolution photo milestones and architectural features curated for this prestigious township.
-                </p>
-              </div>
-
-              <div className="space-y-6">
-                {computedHighlights.map((hl, idx) => {
-                  const isEven = idx % 2 === 0;
-                  return (
-                    <div
-                      key={idx}
-                      className="bg-white rounded-3xl overflow-hidden border border-stone-300/80 shadow-luxury hover:shadow-2xl transition-all duration-300 group"
-                    >
-                      <div className={`grid grid-cols-1 md:grid-cols-12 items-stretch ${isEven ? '' : 'md:flex-row-reverse'}`}>
-                        {/* Image Column */}
-                        <div className={`md:col-span-6 relative overflow-hidden bg-stone-900 min-h-[260px] sm:min-h-[300px] ${isEven ? 'order-1' : 'order-1 md:order-2'}`}>
-                          <img
-                            src={hl.image}
-                            alt={hl.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                            loading="lazy"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                          <div className="absolute top-4 left-4">
-                            <span className="bg-forest-950/90 text-gold-300 text-xs font-extrabold px-3 py-1 rounded-lg border border-gold-500/40 shadow backdrop-blur-md">
-                              Feature 0{idx + 1}
-                            </span>
-                          </div>
-                          <div className="absolute bottom-4 left-4 right-4 text-white">
-                            <span className="text-xs text-gold-200 font-medium tracking-wide">
-                              {hl.subtitle}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Description Column */}
-                        <div className={`md:col-span-6 p-6 sm:p-8 flex flex-col justify-between space-y-4 bg-gradient-to-br from-white to-[#F9FAF9] ${isEven ? 'order-2' : 'order-2 md:order-1'}`}>
-                          <div className="space-y-3">
-                            <div className="flex items-center space-x-2 text-xs font-extrabold text-gold-700 uppercase tracking-wider">
-                              <Sparkles className="w-3.5 h-3.5 text-gold-600" />
-                              <span>Architectural Standard</span>
-                            </div>
-                            <h4 className="text-xl sm:text-2xl font-bold font-editorial text-forest-950 leading-snug">
-                              {hl.title}
-                            </h4>
-                            <p className="text-xs sm:text-sm text-charcoal-700 leading-relaxed font-normal">
-                              {hl.description}
-                            </p>
-                          </div>
-
-                          <div className="pt-3 border-t border-stone-200/80 flex items-center justify-between text-xs">
-                            <div className="flex items-center space-x-2 text-forest-900 font-bold">
-                              <CheckCircle2 className="w-4 h-4 text-forest-800" />
-                              <span>100% Development Verified</span>
-                            </div>
-                            <button
-                              onClick={() => {
-                                const formEl = document.getElementById('enquiry-column');
-                                formEl?.scrollIntoView({ behavior: 'smooth' });
-                              }}
-                              className="text-gold-800 hover:text-gold-950 font-extrabold flex items-center space-x-1"
-                            >
-                              <span>Enquire Plan</span>
-                              <span>→</span>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+            <div className="p-3 bg-[#F8FAF8] rounded-xl border border-stone-200">
+              <span className="text-[11px] font-bold text-charcoal-600 uppercase block">Bank Loan</span>
+              <span className="text-base font-extrabold text-forest-950 font-editorial">Up to 80%</span>
             </div>
-
-            {/* Plot Sizes Available */}
-            {property.plotSizes && property.plotSizes.length > 0 && (
-              <div className="bg-white p-6 sm:p-8 rounded-2xl border border-stone-300 shadow-luxury space-y-4">
-                <div className="flex items-center space-x-2 border-b border-stone-200 pb-3">
-                  <Maximize className="w-5 h-5 text-gold-600" />
-                  <h3 className="text-xl font-bold font-editorial text-forest-950">
-                    Available Plot Dimensions ({property.sizeUnit})
-                  </h3>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {property.plotSizes.map((size, idx) => (
-                    <div key={idx} className="p-3 bg-[#F8FAF8] rounded-xl border border-stone-300 text-center space-y-1">
-                      <span className="text-lg font-bold font-editorial text-forest-950">{size}</span>
-                      <span className="text-[11px] text-charcoal-600 block uppercase font-semibold">{property.sizeUnit}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Township Amenities */}
-            {property.amenities && property.amenities.length > 0 && (
-              <div className="bg-white p-6 sm:p-8 rounded-2xl border border-stone-300 shadow-luxury space-y-4">
-                <h3 className="text-xl font-bold font-editorial text-forest-950 border-b border-stone-200 pb-3">
-                  Township Features & Modern Amenities
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {property.amenities.map((amenity, idx) => (
-                    <div key={idx} className="flex items-center space-x-2 text-xs sm:text-sm font-semibold text-charcoal-800 bg-[#F8FAF8] p-3 rounded-xl border border-stone-200">
-                      <CheckCircle2 className="w-4 h-4 text-gold-600 flex-shrink-0" />
-                      <span>{amenity}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Bank Loan Calculator (High Contrast!) */}
-            <div className="bg-forest-950 text-white p-6 sm:p-8 rounded-2xl border-2 border-gold-600 shadow-2xl space-y-6">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-lg bg-gold-600 text-forest-950 flex items-center justify-center font-bold">
-                  <Calculator className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold font-editorial text-white">80% Bank Loan EMI Calculator</h3>
-                  <p className="text-xs text-gold-300">Supported by SBI, HDFC, ICICI, PNB & leading banks</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                <div>
-                  <label className="block text-xs font-bold text-gray-200 mb-1.5">
-                    Loan Amount (₹)
-                  </label>
-                  <input
-                    type="number"
-                    step="50000"
-                    value={loanAmount}
-                    onChange={(e) => setLoanAmount(Number(e.target.value))}
-                    style={{ backgroundColor: '#07160F', color: '#FFFFFF', borderColor: '#C2892C' }}
-                    className="w-full p-2.5 rounded-lg border text-sm font-bold focus:ring-2 focus:ring-gold-500 focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-gray-200 mb-1.5">
-                    Tenure ({loanTenure} Years)
-                  </label>
-                  <input
-                    type="range"
-                    min="5"
-                    max="30"
-                    value={loanTenure}
-                    onChange={(e) => setLoanTenure(Number(e.target.value))}
-                    className="w-full accent-gold-500 mt-2"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-gray-200 mb-1.5">
-                    Interest Rate (% p.a.)
-                  </label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={interestRate}
-                    onChange={(e) => setInterestRate(Number(e.target.value))}
-                    style={{ backgroundColor: '#07160F', color: '#FFFFFF', borderColor: '#C2892C' }}
-                    className="w-full p-2.5 rounded-lg border text-sm font-bold focus:ring-2 focus:ring-gold-500 focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="p-4 bg-forest-900 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-gold-500/40">
-                <div>
-                  <span className="text-xs text-gray-300 block font-medium">Estimated Monthly EMI</span>
-                  <span className="text-2xl sm:text-3xl font-extrabold font-editorial text-gold-300">
-                    ₹{calculateEMI().toLocaleString('en-IN')} <span className="text-sm font-sans font-normal text-gray-300">/ month</span>
-                  </span>
-                </div>
-                <button
-                  onClick={() => {
-                    const formEl = document.getElementById('enquiry-column');
-                    formEl?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-6 py-2.5 bg-gold-600 hover:bg-gold-500 text-forest-950 font-bold text-xs rounded-lg shadow whitespace-nowrap"
-                >
-                  Apply for Loan Pre-Approval
-                </button>
-              </div>
+            <div className="p-3 bg-[#F8FAF8] rounded-xl border border-stone-200">
+              <span className="text-[11px] font-bold text-charcoal-600 uppercase block">Registry</span>
+              <span className="text-base font-extrabold text-forest-950 font-editorial">Instant Patta</span>
             </div>
-
-            {/* Google Map Section */}
-            <div className="bg-white p-6 sm:p-8 rounded-2xl border border-stone-300 shadow-luxury space-y-4">
-              <h3 className="text-xl font-bold font-editorial text-forest-950 border-b border-stone-200 pb-3">
-                Location & Strategic Connectivity
-              </h3>
-              <p className="text-xs sm:text-sm text-charcoal-700">
-                Situated in prime {property.location.area}, Jaipur. Excellent road network connecting to Jaipur Ring Road, International Airport, and major education & IT hubs.
-              </p>
-              <div className="aspect-[16/7] rounded-xl overflow-hidden border border-stone-300">
-                <iframe
-                  title="Jaipur Location Map"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d113941.51733246473!2d75.76839352932943!3d26.818814524458826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396dc9e208b0beab%3A0xe542fe882433e387!2sJagatpura%2C%20Jaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
-                  className="w-full h-full border-0"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-
-            {/* Project Virtual Tour & 360 Site Walkthrough (Inspired by Riyasat reference) */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-[#0c1c15] via-[#10271d] to-[#07130e] text-white p-6 sm:p-8 rounded-3xl border-2 border-gold-500/50 shadow-2xl space-y-6">
-              <div className="absolute top-0 right-0 w-80 h-80 bg-gold-500/10 rounded-full blur-3xl pointer-events-none" />
-
-              <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gold-500/20 pb-5">
-                <div className="space-y-1">
-                  <div className="inline-flex items-center space-x-2 text-[11px] font-extrabold uppercase tracking-widest text-gold-400 bg-gold-950/80 border border-gold-500/40 px-3 py-1 rounded-full">
-                    <Compass className="w-3.5 h-3.5 text-gold-400 animate-spin duration-3000" />
-                    <span>Project Virtual Tour • 360° Perspective</span>
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-bold font-editorial text-white">
-                    Site Walkthrough & Drone Visuals
-                  </h3>
-                  <p className="text-xs text-stone-300 max-w-lg">
-                    Experience the ground reality, master avenue alignments, boundary fencing, and lush green open spaces directly on your screen.
-                  </p>
-                </div>
-
-                <button
-                  onClick={() => setIsTourModalOpen(true)}
-                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-gold-500 via-gold-600 to-amber-600 text-forest-950 font-extrabold text-xs uppercase tracking-wider shadow-lg hover:shadow-gold-500/30 hover:scale-[1.02] transition-all flex items-center justify-center space-x-2 shrink-0 border border-gold-300"
-                >
-                  <Video className="w-4 h-4" />
-                  <span>Launch 360° Tour</span>
-                </button>
-              </div>
-
-              {/* Interactive Virtual Tour Display Frame */}
-              <div className="relative rounded-2xl overflow-hidden border border-gold-500/30 aspect-[16/9] sm:aspect-[21/9] bg-stone-900 group">
-                {property.virtualTourUrl && (property.virtualTourUrl.includes('youtube.com') || property.virtualTourUrl.includes('embed')) ? (
-                  <iframe
-                    title="Project Virtual Tour"
-                    src={property.virtualTourUrl}
-                    className="w-full h-full border-0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                ) : (
-                  <>
-                    <img
-                      src={images[1] || images[0] || defaultArchImages[1]}
-                      alt="Project 360 Virtual Tour"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-80"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 space-y-3">
-                      <div
-                        onClick={() => setIsTourModalOpen(true)}
-                        className="w-16 h-16 rounded-full bg-gold-500/90 text-forest-950 flex items-center justify-center shadow-2xl cursor-pointer hover:scale-110 transition-transform border-2 border-white"
-                      >
-                        <Compass className="w-8 h-8 animate-pulse text-forest-950" />
-                      </div>
-                      <h4 className="text-lg sm:text-xl font-bold font-editorial text-white drop-shadow-md">
-                        Explore 360° Master Township Panorama
-                      </h4>
-                      <p className="text-xs text-stone-200 max-w-md drop-shadow">
-                        Simulated drone perspective of {property.title} showing 100% boundary demarcations and internal road infrastructure.
-                      </p>
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-
-            {/* Strategic Connectivity & Nearby Landmarks Matrix (Directly below Map & Tour) */}
-            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-300 shadow-luxury space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-stone-200 pb-4">
-                <div>
-                  <div className="inline-flex items-center space-x-1.5 text-xs font-extrabold uppercase tracking-wider text-forest-950 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full mb-1">
-                    <Navigation className="w-3.5 h-3.5 text-gold-600" />
-                    <span>Site Location & Connectivity Advantages</span>
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-bold font-editorial text-forest-950">
-                    Nearby Landmarks & Travel Times
-                  </h3>
-                </div>
-                <span className="text-xs text-charcoal-600 font-medium">
-                  Minutes calculated at standard road speeds
-                </span>
-              </div>
-
-              {/* Category Filter Pills */}
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-                {nearbyCategories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedNearbyCategory(cat)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                      selectedNearbyCategory === cat
-                        ? 'bg-forest-950 text-gold-300 shadow border border-gold-500/50'
-                        : 'bg-stone-100 hover:bg-stone-200 text-charcoal-700 border border-stone-200'
-                    }`}
-                  >
-                    {cat === 'All' ? 'All Connectivity' : cat}
-                  </button>
-                ))}
-              </div>
-
-              {/* Grid of Nearby Connectivity Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                {filteredNearby.map((loc, idx) => (
-                  <div
-                    key={idx}
-                    className="p-4 rounded-2xl bg-[#F8FAF8] border border-stone-200 hover:border-gold-500 hover:bg-white transition-all space-y-2 group shadow-2xs"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-2xl">{loc.icon || '📍'}</span>
-                      <span className="text-xs font-extrabold bg-gold-100 text-gold-900 border border-gold-300 px-2.5 py-0.5 rounded-full flex items-center space-x-1">
-                        <Clock className="w-3 h-3 text-gold-700" />
-                        <span>{loc.distance}</span>
-                      </span>
-                    </div>
-
-                    <div>
-                      <h5 className="text-sm font-bold text-forest-950 group-hover:text-gold-800 transition-colors">
-                        {loc.name}
-                      </h5>
-                      <p className="text-[11px] text-charcoal-600 mt-0.5 font-medium">
-                        {(loc as any).note || 'Key strategic landmark along growth corridor'}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
           </div>
 
-          {/* Sticky Sidebar Lead Capture */}
-          <div id="enquiry-column" className="lg:col-span-4 space-y-6">
-            <div className="sticky top-24 bg-white rounded-2xl p-6 sm:p-7 border-2 border-forest-900 shadow-2xl space-y-5">
-              
-              <div className="space-y-1 text-center pb-4 border-b border-stone-200">
-                <span className="text-xs font-bold uppercase tracking-widest text-gold-800">
-                  Official Developer Desk
+          {/* Description & Overview */}
+          <div className="bg-white p-6 sm:p-8 rounded-2xl border border-stone-300 shadow-luxury space-y-4">
+            <h3 className="text-xl sm:text-2xl font-bold font-editorial text-forest-950 border-b border-stone-200 pb-3">
+              Project Overview & Legal Profile
+            </h3>
+            <p className="text-sm sm:text-base text-charcoal-800 leading-relaxed font-normal">
+              {property.description}
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-stone-200">
+              <div className="flex items-start space-x-2.5">
+                <CheckCircle2 className="w-5 h-5 text-forest-800 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h5 className="text-xs font-bold text-forest-950">100% Clear Title & 90-A Sanctioned</h5>
+                  <p className="text-xs text-charcoal-600">Free from all legal disputes and agricultural caveats.</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-2.5">
+                <CheckCircle2 className="w-5 h-5 text-forest-800 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h5 className="text-xs font-bold text-forest-950">Spot Bank Registry</h5>
+                  <p className="text-xs text-charcoal-600">Direct registration with pre-approved loans from SBI & HDFC.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 6-Point Project Highlights & Visual Architecture Showcase (Alternating Zigzag) */}
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-3 border-b border-stone-200">
+              <div>
+                <span className="text-xs font-extrabold uppercase tracking-widest text-gold-700 bg-gold-100 border border-gold-300 px-3 py-0.5 rounded-full inline-block mb-1">
+                  On-Site Reality & Master Planning
                 </span>
-                <h3 className="text-xl sm:text-2xl font-bold font-editorial text-forest-950">
-                  Direct Enquiry & Booking
+                <h3 className="text-2xl sm:text-3xl font-bold font-editorial text-forest-950">
+                  Project Infrastructure & 6 Key Highlights
                 </h3>
-                <p className="text-xs text-charcoal-700">
-                  0% Brokerage • Free Site Visit Cab Arrangement
+              </div>
+              <p className="text-xs text-charcoal-600 max-w-sm sm:text-right">
+                High-resolution photo milestones and architectural features curated for this prestigious township.
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              {computedHighlights.map((hl, idx) => {
+                const isEven = idx % 2 === 0;
+                return (
+                  <div
+                    key={idx}
+                    className="bg-white rounded-3xl overflow-hidden border border-stone-300/80 shadow-luxury hover:shadow-2xl transition-all duration-300 group"
+                  >
+                    <div className={`grid grid-cols-1 md:grid-cols-12 items-stretch ${isEven ? '' : 'md:flex-row-reverse'}`}>
+                      {/* Image Column */}
+                      <div className={`md:col-span-6 relative overflow-hidden bg-stone-900 min-h-[260px] sm:min-h-[300px] ${isEven ? 'order-1' : 'order-1 md:order-2'}`}>
+                        <img
+                          src={hl.image}
+                          alt={hl.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                        <div className="absolute top-4 left-4">
+                          <span className="bg-forest-950/90 text-gold-300 text-xs font-extrabold px-3 py-1 rounded-lg border border-gold-500/40 shadow backdrop-blur-md">
+                            Feature 0{idx + 1}
+                          </span>
+                        </div>
+                        <div className="absolute bottom-4 left-4 right-4 text-white">
+                          <span className="text-xs text-gold-200 font-medium tracking-wide">
+                            {hl.subtitle}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Description Column */}
+                      <div className={`md:col-span-6 p-6 sm:p-8 flex flex-col justify-between space-y-4 bg-gradient-to-br from-white to-[#F9FAF9] ${isEven ? 'order-2' : 'order-2 md:order-1'}`}>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-2 text-xs font-extrabold text-gold-700 uppercase tracking-wider">
+                            <Sparkles className="w-3.5 h-3.5 text-gold-600" />
+                            <span>Architectural Standard</span>
+                          </div>
+                          <h4 className="text-xl sm:text-2xl font-bold font-editorial text-forest-950 leading-snug">
+                            {hl.title}
+                          </h4>
+                          <p className="text-xs sm:text-sm text-charcoal-700 leading-relaxed font-normal">
+                            {hl.description}
+                          </p>
+                        </div>
+
+                        <div className="pt-3 border-t border-stone-200/80 flex items-center justify-between text-xs">
+                          <div className="flex items-center space-x-2 text-forest-900 font-bold">
+                            <CheckCircle2 className="w-4 h-4 text-forest-800" />
+                            <span>100% Development Verified</span>
+                          </div>
+                          <button
+                            onClick={() => {
+                              const formEl = document.getElementById('enquiry-column');
+                              formEl?.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                            className="text-gold-800 hover:text-gold-950 font-extrabold flex items-center space-x-1"
+                          >
+                            <span>Enquire Plan</span>
+                            <span>→</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Plot Sizes Available */}
+          {property.plotSizes && property.plotSizes.length > 0 && (
+            <div className="bg-white p-6 sm:p-8 rounded-2xl border border-stone-300 shadow-luxury space-y-4">
+              <div className="flex items-center space-x-2 border-b border-stone-200 pb-3">
+                <Maximize className="w-5 h-5 text-gold-600" />
+                <h3 className="text-xl font-bold font-editorial text-forest-950">
+                  Available Plot Dimensions ({property.sizeUnit})
+                </h3>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {property.plotSizes.map((size, idx) => (
+                  <div key={idx} className="p-3 bg-[#F8FAF8] rounded-xl border border-stone-300 text-center space-y-1">
+                    <span className="text-lg font-bold font-editorial text-forest-950">{size}</span>
+                    <span className="text-[11px] text-charcoal-600 block uppercase font-semibold">{property.sizeUnit}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Township Amenities */}
+          {property.amenities && property.amenities.length > 0 && (
+            <div className="bg-white p-6 sm:p-8 rounded-2xl border border-stone-300 shadow-luxury space-y-4">
+              <h3 className="text-xl font-bold font-editorial text-forest-950 border-b border-stone-200 pb-3">
+                Township Features & Modern Amenities
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {property.amenities.map((amenity, idx) => (
+                  <div key={idx} className="flex items-center space-x-2 text-xs sm:text-sm font-semibold text-charcoal-800 bg-[#F8FAF8] p-3 rounded-xl border border-stone-200">
+                    <CheckCircle2 className="w-4 h-4 text-gold-600 flex-shrink-0" />
+                    <span>{amenity}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Bank Loan Calculator (High Contrast!) */}
+
+
+          {/* Google Map Section */}
+          <div className="bg-white p-6 sm:p-8 rounded-2xl border border-stone-300 shadow-luxury space-y-4">
+            <h3 className="text-xl font-bold font-editorial text-forest-950 border-b border-stone-200 pb-3">
+              Location & Strategic Connectivity
+            </h3>
+            <p className="text-xs sm:text-sm text-charcoal-700">
+              Situated in prime {property.location.area}, Jaipur. Excellent road network connecting to Jaipur Ring Road, International Airport, and major education & IT hubs.
+            </p>
+            <div className="aspect-[16/7] rounded-xl overflow-hidden border border-stone-300">
+              <iframe
+                title="Project Location Map"
+                src={
+                  property.location?.mapEmbedUrl && property.location.mapEmbedUrl.trim() !== ''
+                    ? (property.location.mapEmbedUrl.includes('src="')
+                      ? property.location.mapEmbedUrl.match(/src="([^"]+)"/)?.[1] || property.location.mapEmbedUrl
+                      : property.location.mapEmbedUrl)
+                    : `https://maps.google.com/maps?q=${encodeURIComponent((property.location?.address || property.location?.area || property.title) + ', ' + (property.location?.city || 'Jaipur') + ', Rajasthan')}&t=&z=14&ie=UTF8&iwloc=&output=embed`
+                }
+                className="w-full h-full border-0"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          {/* Project Virtual Tour & 360 Site Walkthrough (Inspired by Riyasat reference) */}
+          <div className="relative overflow-hidden bg-gradient-to-br from-[#0c1c15] via-[#10271d] to-[#07130e] text-white p-6 sm:p-8 rounded-3xl border-2 border-gold-500/50 shadow-2xl space-y-6">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-gold-500/10 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gold-500/20 pb-5">
+              <div className="space-y-1">
+                <div className="inline-flex items-center space-x-2 text-[11px] font-extrabold uppercase tracking-widest text-gold-400 bg-gold-950/80 border border-gold-500/40 px-3 py-1 rounded-full">
+                  <Compass className="w-3.5 h-3.5 text-gold-400 animate-spin duration-3000" />
+                  <span>Project Virtual Tour • 360° Perspective</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold font-editorial text-white">
+                  Site Walkthrough & Drone Visuals
+                </h3>
+                <p className="text-xs text-stone-300 max-w-lg">
+                  Experience the ground reality, master avenue alignments, boundary fencing, and lush green open spaces directly on your screen.
                 </p>
               </div>
 
-              {/* Direct Action Buttons */}
-              <div className="grid grid-cols-2 gap-2">
-                <a
-                  href="tel:09828226566"
-                  className="flex items-center justify-center space-x-1.5 bg-forest-950 hover:bg-forest-900 text-gold-300 py-3 rounded-xl text-xs font-bold shadow transition-all border border-gold-500/40"
-                >
-                  <Phone className="w-4 h-4" />
-                  <span>09828226566</span>
-                </a>
-                <a
-                  href={`https://api.whatsapp.com/send?phone=919828226566&text=Hello%20Jaipur%20Property%20Wala,%20I%20am%20interested%20in%20${encodeURIComponent(property.title)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center space-x-1.5 bg-[#25D366] hover:bg-[#20BD5A] text-white py-3 rounded-xl text-xs font-bold shadow transition-all"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>WhatsApp</span>
-                </a>
-              </div>
+              <button
+                onClick={() => setIsTourModalOpen(true)}
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-gold-500 via-gold-600 to-amber-600 text-forest-950 font-extrabold text-xs uppercase tracking-wider shadow-lg hover:shadow-gold-500/30 hover:scale-[1.02] transition-all flex items-center justify-center space-x-2 shrink-0 border border-gold-300"
+              >
+                <Video className="w-4 h-4" />
+                <span>Launch 360° Tour</span>
+              </button>
+            </div>
 
-              {/* Instant Lead Form */}
-              {leadSuccess ? (
-                <div className="p-5 bg-forest-50 border-2 border-forest-200 rounded-xl text-center space-y-2.5">
-                  <CheckCircle2 className="w-10 h-10 text-forest-800 mx-auto" />
-                  <h4 className="text-base font-bold text-forest-950 font-editorial">Enquiry Logged Successfully!</h4>
-                  <p className="text-xs text-charcoal-700 leading-relaxed">
-                    Our Senior Jaipur Advisor will call you within 15 minutes to share plot availability & arrange your free site visit cab.
-                  </p>
-                </div>
+            {/* Interactive Virtual Tour Display Frame */}
+            <div className="relative rounded-2xl overflow-hidden border border-gold-500/30 aspect-[16/9] sm:aspect-[21/9] bg-stone-900 group">
+              {property.virtualTourUrl && (property.virtualTourUrl.includes('youtube.com') || property.virtualTourUrl.includes('embed')) ? (
+                <iframe
+                  title="Project Virtual Tour"
+                  src={property.virtualTourUrl}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
               ) : (
-                <form onSubmit={handleLeadSubmit} className="space-y-3.5 pt-2">
-                  {leadError && (
-                    <div className="text-xs text-red-800 bg-red-50 border border-red-200 p-2.5 rounded-lg">
-                      {leadError}
+                <>
+                  <img
+                    src={images[1] || images[0] || defaultArchImages[1]}
+                    alt="Project 360 Virtual Tour"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-80"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20" />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 space-y-3">
+                    <div
+                      onClick={() => setIsTourModalOpen(true)}
+                      className="w-16 h-16 rounded-full bg-gold-500/90 text-forest-950 flex items-center justify-center shadow-2xl cursor-pointer hover:scale-110 transition-transform border-2 border-white"
+                    >
+                      <Compass className="w-8 h-8 animate-pulse text-forest-950" />
                     </div>
-                  )}
-
-                  <div>
-                    <label className="block text-xs font-bold text-forest-950 mb-1">
-                      Your Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={leadName}
-                      onChange={(e) => setLeadName(e.target.value)}
-                      placeholder="e.g. Rahul Sharma"
-                      className="form-input-luxury"
-                    />
+                    <h4 className="text-lg sm:text-xl font-bold font-editorial text-white drop-shadow-md">
+                      Explore 360° Master Township Panorama
+                    </h4>
+                    <p className="text-xs text-stone-200 max-w-md drop-shadow">
+                      Simulated drone perspective of {property.title} showing 100% boundary demarcations and internal road infrastructure.
+                    </p>
                   </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-forest-950 mb-1">
-                      Phone Number (WhatsApp) *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={leadPhone}
-                      onChange={(e) => setLeadPhone(e.target.value)}
-                      placeholder="09828226566"
-                      className="form-input-luxury"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-forest-950 mb-1">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      value={leadEmail}
-                      onChange={(e) => setLeadEmail(e.target.value)}
-                      placeholder="name@email.com"
-                      className="form-input-luxury"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-forest-950 mb-1">
-                      Message / Question
-                    </label>
-                    <textarea
-                      rows={2}
-                      value={leadMessage}
-                      onChange={(e) => setLeadMessage(e.target.value)}
-                      placeholder="Any specific plot size or requirement..."
-                      className="form-input-luxury"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full py-3.5 rounded-xl bg-forest-950 hover:bg-forest-900 text-gold-300 font-extrabold text-xs uppercase tracking-wider shadow-lg transition-all border border-gold-500/50"
-                  >
-                    {submitting ? 'Submitting...' : 'Request Free Site Visit Cab'}
-                  </button>
-
-                  <p className="text-[11px] text-center text-charcoal-600 pt-1 font-medium">
-                    🔒 100% Confidential. Direct advisory by Jaipur Property Wala.
-                  </p>
-                </form>
+                </>
               )}
+            </div>
+          </div>
 
+          {/* Strategic Connectivity & Nearby Landmarks Matrix (Directly below Map & Tour) */}
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-300 shadow-luxury space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-stone-200 pb-4">
+              <div>
+                <div className="inline-flex items-center space-x-1.5 text-xs font-extrabold uppercase tracking-wider text-forest-950 bg-forest-50 border border-forest-200 px-3 py-1 rounded-full mb-1">
+                  <Navigation className="w-3.5 h-3.5 text-gold-600" />
+                  <span>Site Location & Connectivity Advantages</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold font-editorial text-forest-950">
+                  Nearby Landmarks & Travel Times
+                </h3>
+              </div>
+              <span className="text-xs text-charcoal-600 font-medium">
+                Minutes calculated at standard road speeds
+              </span>
+            </div>
+
+            {/* Category Filter Pills */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+              {nearbyCategories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedNearbyCategory(cat)}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${selectedNearbyCategory === cat
+                    ? 'bg-forest-950 text-gold-300 shadow border border-gold-500/50'
+                    : 'bg-stone-100 hover:bg-stone-200 text-charcoal-700 border border-stone-200'
+                    }`}
+                >
+                  {cat === 'All' ? 'All Connectivity' : cat}
+                </button>
+              ))}
+            </div>
+
+            {/* Grid of Nearby Connectivity Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+              {filteredNearby.map((loc, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 rounded-2xl bg-[#F8FAF8] border border-stone-200 hover:border-gold-500 hover:bg-white transition-all space-y-2 group shadow-2xs"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl">{loc.icon || '📍'}</span>
+                    <span className="text-xs font-extrabold bg-gold-100 text-gold-900 border border-gold-300 px-2.5 py-0.5 rounded-full flex items-center space-x-1">
+                      <Clock className="w-3 h-3 text-gold-700" />
+                      <span>{loc.distance}</span>
+                    </span>
+                  </div>
+
+                  <div>
+                    <h5 className="text-sm font-bold text-forest-950 group-hover:text-gold-800 transition-colors">
+                      {loc.name}
+                    </h5>
+                    <p className="text-[11px] text-charcoal-600 mt-0.5 font-medium">
+                      {(loc as any).note || 'Key strategic landmark along growth corridor'}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
         </div>
 
-        {/* Related Properties */}
+        {/* Related Properties (Similar Opportunities) */}
         {related.length > 0 && (
           <div className="space-y-6 pt-10 border-t border-stone-300">
             <div className="flex justify-between items-end">
@@ -897,6 +709,170 @@ export const PropertyDetailPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Full-Width Luxury Enquiry & VIP Site Visit Booking Desk (Placed at Very Bottom below Similar Opportunities) */}
+        <div
+          id="enquiry-section"
+          className="relative overflow-hidden bg-gradient-to-br from-[#081811] via-[#0d271c] to-[#040e0a] text-white rounded-3xl border-2 border-gold-500/50 shadow-2xl p-6 sm:p-10 lg:p-12 space-y-8"
+        >
+          {/* Target alias for existing links */}
+          <div id="enquiry-column" className="sr-only" />
+
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-gold-500/20">
+            <div className="space-y-2 max-w-2xl">
+              <div className="inline-flex items-center space-x-2 text-[11px] font-extrabold uppercase tracking-widest text-gold-400 bg-gold-950/80 border border-gold-500/40 px-3 py-1 rounded-full">
+                <ShieldCheck className="w-3.5 h-3.5 text-gold-400" />
+                <span>Official Developer Desk • Direct Enquiry & Booking</span>
+              </div>
+              <h3 className="text-2xl sm:text-4xl font-bold font-editorial text-white">
+                Book a Free VIP Site Visit & Request Official Price Dossier
+              </h3>
+              <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+                Experience <strong>{property.title}</strong> in person with complete peace of mind. We provide complimentary AC cab pickup & drop facility for you and your family across Jaipur, Ajmer, Kishangarh & surrounding corridors — featuring 0% brokerage, 100% verified legal title documentation, and spot bank registry support.
+              </p>
+            </div>
+
+            {/* Direct Instant Contact Pills */}
+            <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+              <a
+                href="tel:09828226566"
+                className="flex items-center justify-center space-x-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-forest-950 px-6 py-3.5 rounded-xl font-extrabold text-xs tracking-wider shadow-lg transition-all border border-gold-300"
+              >
+                <Phone className="w-4 h-4" />
+                <span>Call: 09828226566</span>
+              </a>
+              <a
+                href={`https://api.whatsapp.com/send?phone=919828226566&text=Hello%20Jaipur%20Property%20Wala,%20I%20am%20interested%20in%20${encodeURIComponent(property.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center space-x-2 bg-[#25D366] hover:bg-[#20BD5A] text-white px-6 py-3.5 rounded-xl font-bold text-xs tracking-wider shadow-lg transition-all"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>WhatsApp Enquiry</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Instant Lead Form */}
+          {leadSuccess ? (
+            <div className="p-8 bg-[#0a1f16] border-2 border-gold-500/50 rounded-2xl text-center space-y-3 max-w-xl mx-auto">
+              <CheckCircle2 className="w-12 h-12 text-gold-400 mx-auto" />
+              <h4 className="text-xl font-bold text-gold-300 font-editorial">
+                Enquiry Logged Successfully!
+              </h4>
+              <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+                Thank you, <strong className="text-white">{leadName}</strong>. Our Senior Jaipur Property Wala Advisor will call your phone/WhatsApp within 15 minutes to share plot inventory & schedule your complimentary VIP AC cab site visit.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleLeadSubmit} className="space-y-6">
+              {leadError && (
+                <div className="text-xs text-red-300 bg-red-950/80 border border-red-500/50 p-3 rounded-xl">
+                  {leadError}
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-gold-300 mb-1.5">
+                    Your Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={leadName}
+                    onChange={(e) => setLeadName(e.target.value)}
+                    placeholder="e.g. Rahul Sharma"
+                    className="w-full p-3 bg-[#06120d] border border-gold-500/30 focus:border-gold-500 rounded-xl text-xs text-white placeholder-stone-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gold-300 mb-1.5">
+                    Phone / WhatsApp Number *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={leadPhone}
+                    onChange={(e) => setLeadPhone(e.target.value)}
+                    placeholder="09828226566"
+                    className="w-full p-3 bg-[#06120d] border border-gold-500/30 focus:border-gold-500 rounded-xl text-xs text-white placeholder-stone-500 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gold-300 mb-1.5">
+                    Email Address (Optional)
+                  </label>
+                  <input
+                    type="email"
+                    value={leadEmail}
+                    onChange={(e) => setLeadEmail(e.target.value)}
+                    placeholder="name@email.com"
+                    className="w-full p-3 bg-[#06120d] border border-gold-500/30 focus:border-gold-500 rounded-xl text-xs text-white placeholder-stone-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gold-300 mb-1.5">
+                  Message / Preferred Plot Size or Question
+                </label>
+                <textarea
+                  rows={3}
+                  value={leadMessage}
+                  onChange={(e) => setLeadMessage(e.target.value)}
+                  placeholder="I am interested in exploring plot availability and want to schedule a free site visit cab this weekend..."
+                  className="w-full p-3 bg-[#06120d] border border-gold-500/30 focus:border-gold-500 rounded-xl text-xs text-white placeholder-stone-500 focus:outline-none"
+                />
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+                <p className="text-[11px] text-stone-400 flex items-center space-x-1.5">
+                  <ShieldCheck className="w-4 h-4 text-gold-400 shrink-0" />
+                  <span>100% Confidential. Zero spam. Handled directly by Jaipur Property Wala senior desk.</span>
+                </p>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-gold-500 via-gold-600 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-forest-950 font-extrabold text-xs uppercase tracking-wider shadow-xl hover:shadow-gold-500/30 transition-all border border-gold-300 shrink-0"
+                >
+                  {submitting ? 'Submitting Enquiry...' : 'Request Free Site Visit Cab & Dossier →'}
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* 3 Reassurance Value Badges */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-gold-500/20 text-xs">
+            <div className="flex items-center space-x-3 p-3.5 rounded-xl bg-gold-950/40 border border-gold-500/20">
+              <span className="text-2xl">🚕</span>
+              <div>
+                <div className="font-bold text-gold-300">Free VIP AC Cab Visit</div>
+                <div className="text-[11px] text-stone-400">Complimentary doorstep pickup & drop</div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-3.5 rounded-xl bg-gold-950/40 border border-gold-500/20">
+              <span className="text-2xl">📜</span>
+              <div>
+                <div className="font-bold text-gold-300">100% Clear Title Sanction</div>
+                <div className="text-[11px] text-stone-400">90-A legal approvals & instant spot registry</div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-3.5 rounded-xl bg-gold-950/40 border border-gold-500/20">
+              <span className="text-2xl">🏦</span>
+              <div>
+                <div className="font-bold text-gold-300">Up to 80% Bank Loan Approved</div>
+                <div className="text-[11px] text-stone-400">SBI, HDFC, ICICI instant sanction desk</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
 
