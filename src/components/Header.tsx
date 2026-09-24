@@ -30,6 +30,31 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(116);
+
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight);
+      }
+    };
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
+    return () => window.removeEventListener('resize', updateHeaderHeight);
+  }, []);
+
+  // Lock body scroll when mobile menu is open to prevent background scrolling
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
 
   useEffect(() => {
     locationService.getAll()
@@ -124,7 +149,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
   const isPropertiesActive = location.pathname.startsWith('/properties');
 
   return (
-    <header className="sticky top-0 z-50 bg-white/98 backdrop-blur-md border-b border-stone-200 shadow-sm transition-all">
+    <header ref={headerRef} className="sticky top-0 z-50 bg-white border-b border-stone-200 shadow-sm">
       {/* Top Heritage Notification & Contact Bar */}
       <div className="bg-forest-950 text-ivory text-xs py-2 px-4 border-b border-forest-900">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
@@ -379,8 +404,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
 
       {/* Mobile Drawer Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 top-28 z-40 bg-white/98 backdrop-blur-xl border-t border-stone-200 overflow-y-auto pb-12 animate-in fade-in slide-in-from-top duration-300">
-          <div className="px-5 pt-4 space-y-2">
+        <div
+          className="lg:hidden fixed inset-x-0 bottom-0 z-50 bg-white border-t border-stone-200 overflow-y-auto overscroll-contain shadow-2xl"
+          style={{
+            top: `${headerHeight}px`,
+            height: `calc(100dvh - ${headerHeight}px)`
+          }}
+        >
+          <div className="px-5 pt-4 pb-32 space-y-2.5">
             <Link
               to="/"
               className={`block px-4 py-3 rounded-xl text-base font-semibold ${
