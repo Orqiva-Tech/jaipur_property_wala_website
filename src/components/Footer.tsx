@@ -5,10 +5,10 @@ import { Phone, Mail, MapPin, ShieldCheck, CheckCircle2, ArrowRight } from 'luci
 export const Footer: React.FC = () => {
   return (
     <footer className="bg-forest-900 text-ivory pt-16 pb-8 border-t-4 border-gold-600">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-forest-700/60">
           
-          {/* Brand & Introduction */}
+          {/* Brand & Orqiva Tech Details */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
               <img
@@ -27,8 +27,25 @@ export const Footer: React.FC = () => {
             </div>
 
             <p className="text-sm text-gray-300 leading-relaxed">
-              We are Jaipur's premier real estate consultancy specializing in genuine JDA & RERA approved residential and commercial plots. Built on transparency, zero brokerage, and 20+ years of local market leadership.
+              Orqiva Tech is an award-winning global IT & digital marketing company delivering enterprise software, mobile apps, and AI solutions.
             </p>
+
+            <div className="pt-2 space-y-2 text-xs">
+              <a
+                href="mailto:hr@orqivatech.com"
+                className="flex items-center space-x-2 text-gold-400 hover:text-white transition-colors"
+              >
+                <Mail className="w-4 h-4 text-gold-500 shrink-0" />
+                <span>hr@orqivatech.com</span>
+              </a>
+              <a
+                href="tel:+919251217568"
+                className="flex items-center space-x-2 text-gold-400 hover:text-white transition-colors font-semibold"
+              >
+                <Phone className="w-4 h-4 text-gold-500 shrink-0" />
+                <span>+91 92512 17568</span>
+              </a>
+            </div>
 
             <div className="pt-2">
               <div className="inline-flex items-center space-x-2 bg-forest-800/80 px-3 py-1.5 rounded border border-gold-500/30 text-xs text-gold-400">
@@ -152,8 +169,8 @@ export const Footer: React.FC = () => {
               </li>
               <li className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-gold-500 flex-shrink-0" />
-                <a href="tel:09828226566" className="font-semibold text-white hover:text-gold-400 transition-colors">
-                  09828226566
+                <a href="tel:9828226566" className="font-semibold text-white hover:text-gold-400 transition-colors">
+                  9828226566
                 </a>
               </li>
               <li className="flex items-center space-x-3">
@@ -177,10 +194,17 @@ export const Footer: React.FC = () => {
           <div>
             © {new Date().getFullYear()} <span className="text-gold-400 font-semibold">JAIPUR PROPERTY WALA</span>. All Rights Reserved.
           </div>
+          <div className="text-xs text-gray-300">
+            Digital Partner:{' '}
+            <a href="mailto:hr@orqivatech.com" className="text-gold-400 hover:underline font-semibold">
+              Orqiva Tech
+            </a>{' '}
+            (<a href="tel:+919251217568" className="hover:text-gold-300">+91 92512 17568</a>)
+          </div>
           <div className="flex items-center space-x-6">
             <Link to="/privacy-policy" className="hover:text-gold-400 transition-colors">Privacy Policy</Link>
             <Link to="/terms" className="hover:text-gold-400 transition-colors">Terms of Service</Link>
-            <Link to="/admin/login" className="hover:text-gold-400 transition-colors">Admin Login</Link>
+            <a href="https://adminproperti.dobhi.in" target="_blank" rel="noreferrer" className="hover:text-gold-400 transition-colors">Admin Login</a>
           </div>
         </div>
       </div>

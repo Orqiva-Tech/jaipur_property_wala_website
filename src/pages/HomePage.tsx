@@ -253,11 +253,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
                   Learn Our History
                 </Link>
                 <a
-                  href="tel:09828226566"
+                  href="tel:9828226566"
                   className="px-6 py-3 rounded-xl border-2 border-forest-950 text-forest-950 hover:bg-forest-950 hover:text-white text-xs font-bold tracking-wide transition-all flex items-center space-x-2"
                 >
                   <Phone className="w-3.5 h-3.5 text-gold-600" />
-                  <span>Call 09828226566</span>
+                  <span>Call 9828226566</span>
                 </a>
               </div>
             </div>
@@ -543,11 +543,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
                 <ArrowRight className="w-4 h-4" />
               </button>
               <a
-                href="tel:09828226566"
+                href="tel:9828226566"
                 className="px-8 py-3.5 rounded-xl bg-forest-900 hover:bg-forest-800 text-white border border-gold-500/50 text-sm font-bold flex items-center justify-center space-x-2"
               >
                 <Phone className="w-4 h-4 text-gold-400" />
-                <span>Call Now: 09828226566</span>
+                <span>Call Now: 9828226566</span>
               </a>
             </div>
           </div>

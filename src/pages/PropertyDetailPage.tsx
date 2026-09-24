@@ -101,7 +101,7 @@ export const PropertyDetailPage: React.FC = () => {
       });
       setLeadSuccess(true);
     } catch (err: any) {
-      setLeadError(err.response?.data?.message || 'Failed to submit enquiry. Call 09828226566 directly.');
+      setLeadError(err.response?.data?.message || 'Failed to submit enquiry. Call 9828226566 directly.');
     } finally {
       setSubmitting(false);
     }
@@ -738,11 +738,11 @@ export const PropertyDetailPage: React.FC = () => {
             {/* Direct Instant Contact Pills */}
             <div className="flex flex-col sm:flex-row gap-3 shrink-0">
               <a
-                href="tel:09828226566"
+                href="tel:9828226566"
                 className="flex items-center justify-center space-x-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-forest-950 px-6 py-3.5 rounded-xl font-extrabold text-xs tracking-wider shadow-lg transition-all border border-gold-300"
               >
                 <Phone className="w-4 h-4" />
-                <span>Call: 09828226566</span>
+                <span>Call: 9828226566</span>
               </a>
               <a
                 href={`https://api.whatsapp.com/send?phone=919828226566&text=Hello%20Jaipur%20Property%20Wala,%20I%20am%20interested%20in%20${encodeURIComponent(property.title)}`}
@@ -799,7 +799,7 @@ export const PropertyDetailPage: React.FC = () => {
                     required
                     value={leadPhone}
                     onChange={(e) => setLeadPhone(e.target.value)}
-                    placeholder="09828226566"
+                    placeholder="9828226566"
                     className="w-full p-3 bg-[#06120d] border border-gold-500/30 focus:border-gold-500 rounded-xl text-xs text-white placeholder-stone-500 focus:outline-none"
                   />
                 </div>
@@ -850,13 +850,7 @@ export const PropertyDetailPage: React.FC = () => {
 
           {/* 3 Reassurance Value Badges */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-gold-500/20 text-xs">
-            <div className="flex items-center space-x-3 p-3.5 rounded-xl bg-gold-950/40 border border-gold-500/20">
-              <span className="text-2xl">🚕</span>
-              <div>
-                <div className="font-bold text-gold-300">Free VIP AC Cab Visit</div>
-                <div className="text-[11px] text-stone-400">Complimentary doorstep pickup & drop</div>
-              </div>
-            </div>
+
             <div className="flex items-center space-x-3 p-3.5 rounded-xl bg-gold-950/40 border border-gold-500/20">
               <span className="text-2xl">📜</span>
               <div>
@@ -954,10 +948,10 @@ export const PropertyDetailPage: React.FC = () => {
                       Book a free AC cab site visit with our senior Jaipur Property Wala advisor to inspect every demarcated corner in person.
                     </p>
                     <a
-                      href="tel:09828226566"
+                      href="tel:9828226566"
                       className="px-6 py-2.5 rounded-xl bg-gold-500 text-forest-950 font-extrabold text-xs shadow hover:bg-gold-400"
                     >
-                      Call 09828226566 for Live Visit
+                      Call 9828226566 for Live Visit
                     </a>
                   </div>
                 </div>

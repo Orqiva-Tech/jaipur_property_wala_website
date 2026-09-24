@@ -420,7 +420,7 @@ export const CareersPage: React.FC = () => {
                         required
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="09828226566"
+                        placeholder="9828226566"
                         className="form-input-luxury"
                       />
                     </div>

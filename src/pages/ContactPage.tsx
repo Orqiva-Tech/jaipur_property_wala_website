@@ -38,7 +38,7 @@ export const ContactPage: React.FC = () => {
         message: ''
       });
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to submit enquiry. Please call us directly at 09828226566.');
+      setError(err.response?.data?.message || 'Failed to submit enquiry. Please call us directly at 9828226566.');
     } finally {
       setLoading(false);
     }
@@ -113,8 +113,8 @@ export const ContactPage: React.FC = () => {
               <div className="space-y-3 text-sm">
                 <div>
                   <span className="text-xs text-charcoal-600 block font-semibold">Primary Contact:</span>
-                  <a href="tel:09828226566" className="text-lg font-extrabold text-forest-950 hover:text-gold-700 transition-colors">
-                    09828226566
+                  <a href="tel:9828226566" className="text-lg font-extrabold text-forest-950 hover:text-gold-700 transition-colors">
+                    9828226566
                   </a>
                 </div>
 
@@ -221,7 +221,7 @@ export const ContactPage: React.FC = () => {
                         required
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="09828226566"
+                        placeholder="9828226566"
                         className="form-input-luxury"
                       />
                     </div>

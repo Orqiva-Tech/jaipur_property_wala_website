@@ -121,11 +121,11 @@ export const AboutPage: React.FC = () => {
               <ArrowRight className="w-4 h-4" />
             </Link>
             <a
-              href="tel:09828226566"
+              href="tel:9828226566"
               className="px-6 py-3.5 bg-forest-900 hover:bg-forest-800 text-white font-bold rounded-xl text-sm border border-gold-500/40 transition-all flex items-center space-x-2"
             >
               <Phone className="w-4 h-4 text-gold-400" />
-              <span>09828226566</span>
+              <span>9828226566</span>
             </a>
           </div>
         </div>
