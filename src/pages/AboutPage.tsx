@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Award, Target, Eye, CheckCircle2, Phone, MapPin, Landmark, Users, ArrowRight } from 'lucide-react';
+import { settingsService } from '../services/api';
 
 export const AboutPage: React.FC = () => {
+  const [settings, setSettings] = useState<any>(null);
+
+  useEffect(() => {
+    settingsService.getSettings()
+      .then((res: any) => setSettings(res.data?.data || null))
+      .catch(() => {});
+  }, []);
   return (
     <div className="bg-[#F8F9F8] min-h-screen py-10 sm:py-16 space-y-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
@@ -34,7 +42,9 @@ export const AboutPage: React.FC = () => {
               
               {/* Contained Experience Badge (No negative overflow overlap!) */}
               <div className="absolute bottom-5 right-5 bg-forest-950 text-white p-5 rounded-2xl shadow-2xl border-2 border-gold-500/60 max-w-[220px]">
-                <span className="text-3xl font-bold font-editorial text-gold-400 block">4,500+</span>
+                <span className="text-3xl font-bold font-editorial text-gold-400 block">
+                  {settings?.stats?.satisfiedClients || '4,500+'}
+                </span>
                 <span className="text-xs text-gray-200 font-medium leading-tight">
                   Families happily settled in verified JDA townships
                 </span>

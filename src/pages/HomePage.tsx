@@ -15,7 +15,7 @@ import {
   KeyRound,
   FileCheck
 } from 'lucide-react';
-import { propertyService, blogService, galleryService, formatImageUrl } from '../services/api';
+import { propertyService, blogService, galleryService, settingsService, formatImageUrl } from '../services/api';
 import { Property, Blog, GalleryItem } from '../types';
 import { PropertyCard } from '../components/PropertyCard';
 import { HeroSearch } from '../components/HeroSearch';
@@ -28,19 +28,22 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
   const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
   const [recentBlogs, setRecentBlogs] = useState<Blog[]>([]);
   const [galleryPreview, setGalleryPreview] = useState<GalleryItem[]>([]);
+  const [settings, setSettings] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const [propsRes, blogsRes, galleryRes] = await Promise.all([
+        const [propsRes, blogsRes, galleryRes, settingsRes] = await Promise.all([
           propertyService.getFeatured(),
           blogService.getAll({ limit: 3 }),
-          galleryService.getAll()
+          galleryService.getAll(),
+          settingsService.getSettings().catch(() => ({ data: { data: null } }))
         ]);
         setFeaturedProperties(propsRes.data.data || []);
         setRecentBlogs(blogsRes.data.data?.slice(0, 3) || []);
         setGalleryPreview(galleryRes.data.data?.slice(0, 4) || []);
+        setSettings(settingsRes.data?.data || null);
       } catch (error) {
         console.error('Error loading homepage data', error);
       } finally {
@@ -103,23 +106,31 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
             </button>
           </div>
 
-          {/* Key Facts / Metric Counters */}
+          {/* Key Facts / Metric Counters - Live Real Data from Admin */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-6 border-t border-white/15 text-center">
             <div className="p-3.5 bg-forest-900/70 rounded-xl border border-white/15">
-              <span className="block text-2xl sm:text-3xl font-bold font-editorial text-gold-400">20+</span>
+              <span className="block text-2xl sm:text-3xl font-bold font-editorial text-gold-400">
+                {settings?.stats?.yearsExperience || '20+'}
+              </span>
               <span className="text-xs text-gray-200 font-semibold uppercase tracking-wider">Years Experience</span>
             </div>
             <div className="p-3.5 bg-forest-900/70 rounded-xl border border-white/15">
-              <span className="block text-2xl sm:text-3xl font-bold font-editorial text-gold-400">3,200+</span>
-              <span className="text-xs text-gray-200 font-semibold uppercase tracking-wider">Plots Delivered</span>
+              <span className="block text-2xl sm:text-3xl font-bold font-editorial text-gold-400">
+                {settings?.stats?.satisfiedClients || '4,500+'}
+              </span>
+              <span className="text-xs text-gray-200 font-semibold uppercase tracking-wider">Satisfied Families</span>
             </div>
             <div className="p-3.5 bg-forest-900/70 rounded-xl border border-white/15">
-              <span className="block text-2xl sm:text-3xl font-bold font-editorial text-gold-400">80%</span>
-              <span className="text-xs text-gray-200 font-semibold uppercase tracking-wider">Bank Loan Max</span>
+              <span className="block text-2xl sm:text-3xl font-bold font-editorial text-gold-400">
+                {settings?.stats?.jdaPlotsSold || '3,200+'}
+              </span>
+              <span className="text-xs text-gray-200 font-semibold uppercase tracking-wider">JDA Plots Handed</span>
             </div>
             <div className="p-3.5 bg-forest-900/70 rounded-xl border border-white/15">
-              <span className="block text-2xl sm:text-3xl font-bold font-editorial text-gold-400">0%</span>
-              <span className="text-xs text-gray-200 font-semibold uppercase tracking-wider">Brokerage Fee</span>
+              <span className="block text-2xl sm:text-3xl font-bold font-editorial text-gold-400">
+                {settings?.stats?.bankLoanApproval || '80% All Banks'}
+              </span>
+              <span className="text-xs text-gray-200 font-semibold uppercase tracking-wider">Bank Loan Ratio</span>
             </div>
           </div>
 

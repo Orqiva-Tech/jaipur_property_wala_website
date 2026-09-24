@@ -108,6 +108,10 @@ export const locationService = {
   getAll: (params?: Record<string, any>) => api.get('/locations', { params })
 };
 
+export const settingsService = {
+  getSettings: () => api.get('/settings')
+};
+
 export const adminService = {
   login: (credentials: { email: string; password: string }) => api.post('/admin/auth/login', credentials),
   getProfile: () => api.get('/admin/auth/me'),

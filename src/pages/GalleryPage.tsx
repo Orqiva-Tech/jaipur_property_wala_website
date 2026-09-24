@@ -10,6 +10,11 @@ export const GalleryPage: React.FC = () => {
   const [selectedLocation, setSelectedLocation] = useState('All');
   const [loading, setLoading] = useState(true);
   const [selectedItemIndex, setSelectedItemIndex] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const itemsPerPage = 9;
+  const totalPages = Math.ceil(items.length / itemsPerPage) || 1;
+  const paginatedItems = items.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   useEffect(() => {
     locationService.getAll()
@@ -56,6 +61,7 @@ export const GalleryPage: React.FC = () => {
         if (selectedLocation !== 'All') params.location = selectedLocation;
         const res = await galleryService.getAll(params);
         setItems(res.data.data || []);
+        setCurrentPage(1);
       } catch (error) {
         console.error('Error fetching gallery items', error);
       } finally {
@@ -174,15 +180,17 @@ export const GalleryPage: React.FC = () => {
             <p className="text-xs sm:text-sm text-charcoal-700">Please choose another category or check back soon as our field surveyors upload regular on-site construction updates.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {items.map((item, idx) => {
-              const mediaSrc = formatImageUrl(item.mediaUrl);
-              const isVideo = item.mediaType === 'video';
+          <div className="space-y-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {paginatedItems.map((item, idx) => {
+                const mediaSrc = formatImageUrl(item.mediaUrl);
+                const isVideo = item.mediaType === 'video';
+                const realIdx = (currentPage - 1) * itemsPerPage + idx;
 
-              return (
-                <div
-                  key={item._id}
-                  onClick={() => setSelectedItemIndex(idx)}
+                return (
+                  <div
+                    key={item._id}
+                    onClick={() => setSelectedItemIndex(realIdx)}
                   className="group relative rounded-2xl overflow-hidden shadow-luxury bg-white border border-stone-300 hover:border-gold-500/60 cursor-pointer aspect-[4/3] transition-all"
                 >
                   {isVideo ? (
@@ -228,7 +236,63 @@ export const GalleryPage: React.FC = () => {
               );
             })}
           </div>
-        )}
+
+          {/* Gallery Pagination */}
+          {totalPages > 1 && (
+            <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-luxury flex flex-col sm:flex-row items-center justify-between gap-4">
+              <p className="text-xs font-semibold text-charcoal-600">
+                Showing <span className="font-extrabold text-forest-950">{(currentPage - 1) * itemsPerPage + 1}</span> to <span className="font-extrabold text-forest-950">{Math.min(currentPage * itemsPerPage, items.length)}</span> of <span className="font-extrabold text-forest-950">{items.length}</span> media items
+              </p>
+
+              <div className="flex items-center space-x-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCurrentPage(p => Math.max(p - 1, 1));
+                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                  }}
+                  disabled={currentPage === 1}
+                  className="px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-stone-100 hover:bg-stone-200 disabled:opacity-40 disabled:cursor-not-allowed text-forest-950"
+                >
+                  Previous
+                </button>
+
+                <div className="flex items-center space-x-1.5">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pg) => (
+                    <button
+                      key={pg}
+                      type="button"
+                      onClick={() => {
+                        setCurrentPage(pg);
+                        window.scrollTo({ top: 300, behavior: 'smooth' });
+                      }}
+                      className={`w-8 h-8 rounded-xl text-xs font-bold transition-all ${
+                        currentPage === pg
+                          ? 'bg-forest-950 text-gold-300 shadow-md border border-gold-500/50'
+                          : 'bg-stone-50 hover:bg-stone-100 text-charcoal-700 border border-stone-200'
+                      }`}
+                    >
+                      {pg}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCurrentPage(p => Math.min(p + 1, totalPages));
+                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                  }}
+                  disabled={currentPage === totalPages}
+                  className="px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-stone-100 hover:bg-stone-200 disabled:opacity-40 disabled:cursor-not-allowed text-forest-950"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
       </div>
 
       {/* Lightbox / Video Player Modal */}
