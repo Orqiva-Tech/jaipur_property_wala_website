@@ -31,7 +31,7 @@ export const PrivacyTerms: React.FC = () => {
 
             <h3 className="text-base font-bold text-forest-900 font-editorial">4. Official Registered Office</h3>
             <p>
-              Livasha Flat No.301, Mahal Yojna, Mahal Road Scheme, Jagatpura, Jaipur - 302017, Rajasthan. Contact: 9828226566 | info@jaipurpropertywala.in
+              Livasha Flat No.301, Mahal Yojna, Mahal Road Scheme, Jagatpura, Jaipur - 302017, Rajasthan. Contact: +91 92512 17568 | info@jaipurpropertywala.in
             </p>
           </div>
         </div>

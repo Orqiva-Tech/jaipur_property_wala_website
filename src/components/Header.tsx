@@ -104,11 +104,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
         <div className="w-full flex flex-wrap justify-between items-center gap-2">
           <div className="flex items-center space-x-4 sm:space-x-6">
             <a
-              href="tel:9828226566"
+              href="tel:+919251217568"
               className="flex items-center space-x-1.5 text-gold-400 hover:text-white transition-colors"
             >
               <Phone className="w-3.5 h-3.5 text-gold-500" />
-              <span className="font-bold tracking-wide">9828226566</span>
+              <span className="font-bold tracking-wide">+91 92512 17568</span>
             </a>
             <a
               href="mailto:info@jaipurpropertywala.in"
@@ -420,9 +420,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
 
                 <div className="p-3 bg-forest-50 rounded-xl space-y-2 text-xs text-forest-950">
                   <div className="font-bold text-[11px] tracking-wider uppercase text-gold-800">Official Contact</div>
-                  <a href="tel:9828226566" className="flex items-center space-x-2 font-bold text-forest-900">
+                  <a href="tel:+919251217568" className="flex items-center space-x-2 font-bold text-forest-900">
                     <Phone className="w-3.5 h-3.5 text-gold-600" />
-                    <span>9828226566</span>
+                    <span>+91 92512 17568</span>
                   </a>
                   <a href="mailto:info@jaipurpropertywala.in" className="flex items-center space-x-2 text-charcoal-700">
                     <Mail className="w-3.5 h-3.5 text-gold-600" />

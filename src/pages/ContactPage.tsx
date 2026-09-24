@@ -38,7 +38,7 @@ export const ContactPage: React.FC = () => {
         message: ''
       });
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to submit enquiry. Please call us directly at 9828226566.');
+      setError(err.response?.data?.message || 'Failed to submit enquiry. Please call us directly at +91 92512 17568.');
     } finally {
       setLoading(false);
     }
@@ -113,8 +113,8 @@ export const ContactPage: React.FC = () => {
               <div className="space-y-3 text-sm">
                 <div>
                   <span className="text-xs text-charcoal-600 block font-semibold">Primary Contact:</span>
-                  <a href="tel:9828226566" className="text-lg font-extrabold text-forest-950 hover:text-gold-700 transition-colors">
-                    9828226566
+                  <a href="tel:+919251217568" className="text-lg font-extrabold text-forest-950 hover:text-gold-700 transition-colors">
+                    +91 92512 17568
                   </a>
                 </div>
 
@@ -128,7 +128,7 @@ export const ContactPage: React.FC = () => {
 
               <div className="pt-2">
                 <a
-                  href="https://api.whatsapp.com/send?phone=919828226566&text=Hello%20Jaipur%20Property%20Wala,%20I%20would%20like%20to%20enquire%20about%20JDA%20plots."
+                  href="https://api.whatsapp.com/send?phone=919251217568&text=Hello%20Jaipur%20Property%20Wala,%20I%20would%20like%20to%20enquire%20about%20JDA%20plots."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] text-white text-xs font-bold shadow flex items-center justify-center space-x-2 transition-all"
@@ -221,7 +221,7 @@ export const ContactPage: React.FC = () => {
                         required
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="9828226566"
+                        placeholder="+91 92512 17568"
                         className="form-input-luxury"
                       />
                     </div>

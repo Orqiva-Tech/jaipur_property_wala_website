@@ -101,7 +101,7 @@ export const PropertyDetailPage: React.FC = () => {
       });
       setLeadSuccess(true);
     } catch (err: any) {
-      setLeadError(err.response?.data?.message || 'Failed to submit enquiry. Call 9828226566 directly.');
+      setLeadError(err.response?.data?.message || 'Failed to submit enquiry. Call +91 92512 17568 directly.');
     } finally {
       setSubmitting(false);
     }
@@ -738,14 +738,14 @@ export const PropertyDetailPage: React.FC = () => {
             {/* Direct Instant Contact Pills */}
             <div className="flex flex-col sm:flex-row gap-3 shrink-0">
               <a
-                href="tel:9828226566"
+                href="tel:+919251217568"
                 className="flex items-center justify-center space-x-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-forest-950 px-6 py-3.5 rounded-xl font-extrabold text-xs tracking-wider shadow-lg transition-all border border-gold-300"
               >
                 <Phone className="w-4 h-4" />
-                <span>Call: 9828226566</span>
+                <span>Call: +91 92512 17568</span>
               </a>
               <a
-                href={`https://api.whatsapp.com/send?phone=919828226566&text=Hello%20Jaipur%20Property%20Wala,%20I%20am%20interested%20in%20${encodeURIComponent(property.title)}`}
+                href={`https://api.whatsapp.com/send?phone=919251217568&text=Hello%20Jaipur%20Property%20Wala,%20I%20am%20interested%20in%20${encodeURIComponent(property.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center space-x-2 bg-[#25D366] hover:bg-[#20BD5A] text-white px-6 py-3.5 rounded-xl font-bold text-xs tracking-wider shadow-lg transition-all"
@@ -799,7 +799,7 @@ export const PropertyDetailPage: React.FC = () => {
                     required
                     value={leadPhone}
                     onChange={(e) => setLeadPhone(e.target.value)}
-                    placeholder="9828226566"
+                    placeholder="+91 92512 17568"
                     className="w-full p-3 bg-[#06120d] border border-gold-500/30 focus:border-gold-500 rounded-xl text-xs text-white placeholder-stone-500 focus:outline-none"
                   />
                 </div>
@@ -840,7 +840,7 @@ export const PropertyDetailPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-gold-500 via-gold-600 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-forest-950 font-extrabold text-xs uppercase tracking-wider shadow-xl hover:shadow-gold-500/30 transition-all border border-gold-300 shrink-0"
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-gold-500 via-gold-600 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-forest-950 font-extrabold text-xs uppercase tracking-wider shadow-xl hover:shadow-gold-500/30 transition-all border border-gold-300 shrink-0"
                 >
                   {submitting ? 'Submitting Enquiry...' : 'Request Free Site Visit Cab & Dossier →'}
                 </button>
@@ -948,10 +948,10 @@ export const PropertyDetailPage: React.FC = () => {
                       Book a free AC cab site visit with our senior Jaipur Property Wala advisor to inspect every demarcated corner in person.
                     </p>
                     <a
-                      href="tel:9828226566"
+                      href="tel:+919251217568"
                       className="px-6 py-2.5 rounded-xl bg-gold-500 text-forest-950 font-extrabold text-xs shadow hover:bg-gold-400"
                     >
-                      Call 9828226566 for Live Visit
+                      Call +91 92512 17568 for Live Visit
                     </a>
                   </div>
                 </div>
