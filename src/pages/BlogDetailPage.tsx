@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, Clock, User, ArrowLeft, Share2, Eye, ShieldCheck, Phone } from 'lucide-react';
-import { blogService } from '../services/api';
+import { blogService, formatImageUrl } from '../services/api';
 import { Blog } from '../types';
 
 export const BlogDetailPage: React.FC = () => {
@@ -114,7 +114,7 @@ export const BlogDetailPage: React.FC = () => {
 
         {/* Featured Cover Image */}
         <div className="rounded-2xl overflow-hidden shadow-2xl aspect-[16/9] border-2 border-white">
-          <img src={blog.coverImage} alt={blog.title} className="w-full h-full object-cover" />
+          <img src={formatImageUrl(blog.coverImage)} alt={blog.title} className="w-full h-full object-cover" />
         </div>
 
         {/* Rich Content */}

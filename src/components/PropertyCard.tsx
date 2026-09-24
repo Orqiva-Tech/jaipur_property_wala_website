@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, ShieldCheck, Landmark, Maximize, ArrowRight, PhoneCall } from 'lucide-react';
 import { Property } from '../types';
+import { formatImageUrl } from '../services/api';
 
 interface PropertyCardProps {
   property: Property;
@@ -11,7 +12,7 @@ interface PropertyCardProps {
 export const PropertyCard: React.FC<PropertyCardProps> = ({ property, onEnquire }) => {
   const defaultImg = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80';
   const rawImg = property.images && property.images.length > 0 ? property.images[0] : defaultImg;
-  const imgUrl = rawImg.startsWith('http') ? rawImg : rawImg;
+  const imgUrl = formatImageUrl(rawImg);
 
   return (
     <div className="group bg-white rounded-2xl overflow-hidden border border-stone-200/90 shadow-luxury hover:shadow-luxury-hover hover:border-gold-500/50 transition-all duration-300 flex flex-col justify-between">

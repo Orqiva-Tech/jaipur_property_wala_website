@@ -15,7 +15,7 @@ import {
   KeyRound,
   FileCheck
 } from 'lucide-react';
-import { propertyService, blogService, galleryService } from '../services/api';
+import { propertyService, blogService, galleryService, formatImageUrl } from '../services/api';
 import { Property, Blog, GalleryItem } from '../types';
 import { PropertyCard } from '../components/PropertyCard';
 import { HeroSearch } from '../components/HeroSearch';
@@ -450,7 +450,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
           {galleryPreview.map((item) => (
             <div key={item._id} className="group relative aspect-square rounded-2xl overflow-hidden shadow-luxury bg-stone-100 border border-stone-300">
               <img
-                src={item.mediaUrl.startsWith('http') ? item.mediaUrl : item.mediaUrl}
+                src={formatImageUrl(item.mediaUrl)}
                 alt={item.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Camera, Video, X, ChevronLeft, ChevronRight, Play, MapPin, Layers } from 'lucide-react';
-import { galleryService, locationService } from '../services/api';
+import { galleryService, locationService, formatImageUrl } from '../services/api';
 import { GalleryItem, LocationItem } from '../types';
 
 export const GalleryPage: React.FC = () => {
@@ -176,7 +176,7 @@ export const GalleryPage: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {items.map((item, idx) => {
-              const mediaSrc = item.mediaUrl.startsWith('http') ? item.mediaUrl : item.mediaUrl;
+              const mediaSrc = formatImageUrl(item.mediaUrl);
               const isVideo = item.mediaType === 'video';
 
               return (
@@ -253,14 +253,14 @@ export const GalleryPage: React.FC = () => {
           <div className="max-w-4xl max-h-[85vh] flex flex-col items-center">
             {activeItem.mediaType === 'video' ? (
               <video
-                src={activeItem.mediaUrl.startsWith('http') ? activeItem.mediaUrl : activeItem.mediaUrl}
+                src={formatImageUrl(activeItem.mediaUrl)}
                 controls
                 autoPlay
                 className="max-h-[70vh] rounded-2xl shadow-2xl"
               />
             ) : (
               <img
-                src={activeItem.mediaUrl.startsWith('http') ? activeItem.mediaUrl : activeItem.mediaUrl}
+                src={formatImageUrl(activeItem.mediaUrl)}
                 alt={activeItem.title}
                 className="max-h-[70vh] max-w-full object-contain rounded-2xl shadow-2xl"
               />

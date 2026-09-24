@@ -56,13 +56,15 @@ export const App: React.FC = () => {
                   Jaipur Property Wala Executive ERP
                 </h2>
                 <p className="text-xs text-stone-300">
-                  The Admin Control Panel is hosted on its dedicated standalone portal on Port 5181.
+                  The Admin Control Panel is hosted on its dedicated secure management portal.
                 </p>
                 <a
-                  href="http://localhost:5181"
+                  href={import.meta.env.VITE_ADMIN_PORTAL_URL || 'https://adminproperti.dobhi.in'}
+                  target="_blank"
+                  rel="noreferrer"
                   className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-gold-500 to-amber-600 text-forest-950 font-bold text-xs uppercase tracking-wider shadow hover:scale-105 transition-transform"
                 >
-                  Go to Dedicated Admin Portal (5181) →
+                  Go to Dedicated Admin Portal →
                 </a>
               </div>
             </div>

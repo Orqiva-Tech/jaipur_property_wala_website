@@ -24,7 +24,7 @@ import {
   Clock,
   Building
 } from 'lucide-react';
-import { propertyService, enquiryService } from '../services/api';
+import { propertyService, enquiryService, formatImageUrl } from '../services/api';
 import { Property } from '../types';
 import { PropertyCard } from '../components/PropertyCard';
 
@@ -129,7 +129,7 @@ export const PropertyDetailPage: React.FC = () => {
   }
 
   const defaultImg = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80';
-  const images = property.images && property.images.length > 0 ? property.images : [defaultImg];
+  const images = (property.images && property.images.length > 0 ? property.images : [defaultImg]).map(img => formatImageUrl(img));
 
   const defaultArchImages = [
     'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80',
@@ -437,7 +437,7 @@ export const PropertyDetailPage: React.FC = () => {
                       {/* Image Column */}
                       <div className={`md:col-span-6 relative overflow-hidden bg-stone-900 min-h-[260px] sm:min-h-[300px] ${isEven ? 'order-1' : 'order-1 md:order-2'}`}>
                         <img
-                          src={hl.image}
+                          src={formatImageUrl(hl.image)}
                           alt={hl.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                           loading="lazy"

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, Calendar, Clock, ArrowRight, User, Search, Tag } from 'lucide-react';
-import { blogService } from '../services/api';
+import { blogService, formatImageUrl } from '../services/api';
 import { Blog } from '../types';
 
 export const BlogsPage: React.FC = () => {
@@ -106,7 +106,7 @@ export const BlogsPage: React.FC = () => {
                 <div>
                   <div className="aspect-[16/10] overflow-hidden bg-gray-100">
                     <img
-                      src={blog.coverImage}
+                      src={formatImageUrl(blog.coverImage)}
                       alt={blog.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
