@@ -83,11 +83,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
   const cityLocations = dynamicLocations.length > 0
     ? dynamicLocations.map(loc => ({ city: loc.name }))
     : [
-        { city: 'Jaipur' },
-        { city: 'Ajmer' },
-        { city: 'Kishangarh' },
-        { city: 'Mumbai' }
-      ];
+      { city: 'Jaipur' },
+      { city: 'Ajmer' },
+      { city: 'Kishangarh' },
+      { city: 'Mumbai' }
+    ];
 
   const isActive = (path: string) => {
     if (path === '/' && location.pathname === '/') return true;
@@ -132,14 +132,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
                   : 'Jaipur • Ajmer • Kishangarh • Mumbai'}
               </span>
             </div>
-            <a
-              href="https://adminproperti.dobhi.in"
-              target="_blank"
-              rel="noreferrer"
-              className="text-gray-300 hover:text-gold-300 text-[11px] font-semibold transition-colors ml-2 hidden lg:inline"
-            >
-              Admin Portal
-            </a>
+
           </div>
         </div>
       </div>
@@ -148,7 +141,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
       <header ref={headerRef} className="sticky top-0 z-50 bg-white border-b border-stone-200 shadow-xs">
         <div className="w-full px-3 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            
+
             {/* Logo & Brand Identity (Aligned left) */}
             <Link to="/" className="flex items-center space-x-2.5 sm:space-x-3 group shrink-0">
               <img
@@ -170,22 +163,20 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
             <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
               <Link
                 to="/"
-                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all ${
-                  location.pathname === '/'
-                    ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
-                    : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all ${location.pathname === '/'
+                  ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
+                  : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
+                  }`}
               >
                 Home
               </Link>
 
               <Link
                 to="/about"
-                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all ${
-                  isActive('/about')
-                    ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
-                    : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all ${isActive('/about')
+                  ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
+                  : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
+                  }`}
               >
                 About Us
               </Link>
@@ -199,11 +190,10 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
               >
                 <button
                   onClick={() => setIsPropertyDropdownOpen(!isPropertyDropdownOpen)}
-                  className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all flex items-center space-x-1 ${
-                    isPropertiesActive
-                      ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
-                      : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
-                  }`}
+                  className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all flex items-center space-x-1 ${isPropertiesActive
+                    ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
+                    : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
+                    }`}
                 >
                   <span>Properties</span>
                   <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isPropertyDropdownOpen ? 'rotate-180 text-gold-600' : 'text-stone-400'}`} />
@@ -240,44 +230,40 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
 
               <Link
                 to="/gallery"
-                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all ${
-                  isActive('/gallery')
-                    ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
-                    : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all ${isActive('/gallery')
+                  ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
+                  : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
+                  }`}
               >
                 Gallery
               </Link>
 
               <Link
                 to="/careers"
-                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all ${
-                  isActive('/careers')
-                    ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
-                    : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all ${isActive('/careers')
+                  ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
+                  : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
+                  }`}
               >
                 Careers
               </Link>
 
               <Link
                 to="/blogs"
-                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all ${
-                  isActive('/blogs')
-                    ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
-                    : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all ${isActive('/blogs')
+                  ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
+                  : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
+                  }`}
               >
                 Blogs
               </Link>
 
               <Link
                 to="/contact"
-                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all ${
-                  isActive('/contact')
-                    ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
-                    : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs xl:text-sm font-semibold transition-all ${isActive('/contact')
+                  ? 'text-forest-950 bg-forest-50 font-bold border-b-2 border-forest-900'
+                  : 'text-charcoal-700 hover:text-forest-950 hover:bg-stone-50'
+                  }`}
               >
                 Contact Us
               </Link>
@@ -319,18 +305,16 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
             <div className="px-5 pt-4 pb-32 space-y-2">
               <Link
                 to="/"
-                className={`block px-4 py-2.5 rounded-xl text-sm font-semibold ${
-                  location.pathname === '/' ? 'bg-forest-950 text-gold-300 font-bold' : 'text-charcoal-800 hover:bg-stone-100'
-                }`}
+                className={`block px-4 py-2.5 rounded-xl text-sm font-semibold ${location.pathname === '/' ? 'bg-forest-950 text-gold-300 font-bold' : 'text-charcoal-800 hover:bg-stone-100'
+                  }`}
               >
                 Home
               </Link>
 
               <Link
                 to="/about"
-                className={`block px-4 py-2.5 rounded-xl text-sm font-semibold ${
-                  isActive('/about') ? 'bg-forest-950 text-gold-300 font-bold' : 'text-charcoal-800 hover:bg-stone-100'
-                }`}
+                className={`block px-4 py-2.5 rounded-xl text-sm font-semibold ${isActive('/about') ? 'bg-forest-950 text-gold-300 font-bold' : 'text-charcoal-800 hover:bg-stone-100'
+                  }`}
               >
                 About Us
               </Link>
@@ -373,36 +357,32 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
 
               <Link
                 to="/gallery"
-                className={`block px-4 py-2.5 rounded-xl text-sm font-semibold ${
-                  isActive('/gallery') ? 'bg-forest-950 text-gold-300 font-bold' : 'text-charcoal-800 hover:bg-stone-100'
-                }`}
+                className={`block px-4 py-2.5 rounded-xl text-sm font-semibold ${isActive('/gallery') ? 'bg-forest-950 text-gold-300 font-bold' : 'text-charcoal-800 hover:bg-stone-100'
+                  }`}
               >
                 Gallery
               </Link>
 
               <Link
                 to="/careers"
-                className={`block px-4 py-2.5 rounded-xl text-sm font-semibold ${
-                  isActive('/careers') ? 'bg-forest-950 text-gold-300 font-bold' : 'text-charcoal-800 hover:bg-stone-100'
-                }`}
+                className={`block px-4 py-2.5 rounded-xl text-sm font-semibold ${isActive('/careers') ? 'bg-forest-950 text-gold-300 font-bold' : 'text-charcoal-800 hover:bg-stone-100'
+                  }`}
               >
                 Careers
               </Link>
 
               <Link
                 to="/blogs"
-                className={`block px-4 py-2.5 rounded-xl text-sm font-semibold ${
-                  isActive('/blogs') ? 'bg-forest-950 text-gold-300 font-bold' : 'text-charcoal-800 hover:bg-stone-100'
-                }`}
+                className={`block px-4 py-2.5 rounded-xl text-sm font-semibold ${isActive('/blogs') ? 'bg-forest-950 text-gold-300 font-bold' : 'text-charcoal-800 hover:bg-stone-100'
+                  }`}
               >
                 Blogs
               </Link>
 
               <Link
                 to="/contact"
-                className={`block px-4 py-2.5 rounded-xl text-sm font-semibold ${
-                  isActive('/contact') ? 'bg-forest-950 text-gold-300 font-bold' : 'text-charcoal-800 hover:bg-stone-100'
-                }`}
+                className={`block px-4 py-2.5 rounded-xl text-sm font-semibold ${isActive('/contact') ? 'bg-forest-950 text-gold-300 font-bold' : 'text-charcoal-800 hover:bg-stone-100'
+                  }`}
               >
                 Contact Us
               </Link>
