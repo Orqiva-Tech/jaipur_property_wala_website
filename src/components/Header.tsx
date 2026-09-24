@@ -174,9 +174,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
           
           {/* Logo & Brand Identity */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-11 h-11 rounded-xl bg-forest-950 flex items-center justify-center text-gold-400 shadow-md border border-gold-500/40 group-hover:bg-forest-900 transition-colors">
-              <Compass className="w-6 h-6 text-gold-400 group-hover:rotate-45 transition-transform duration-500" />
-            </div>
+            <img
+              src="/logo.png"
+              alt="Jaipur Property Wala Logo"
+              className="w-12 h-12 rounded-full border-2 border-gold-400 object-cover shadow-sm group-hover:scale-105 transition-transform duration-300"
+            />
             <div className="flex flex-col">
               <span className="text-xl sm:text-2xl font-bold font-editorial tracking-tight text-forest-950 group-hover:text-forest-800 transition-colors">
                 JAIPUR PROPERTY WALA

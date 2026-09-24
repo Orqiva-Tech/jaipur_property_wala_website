@@ -11,9 +11,11 @@ export const Footer: React.FC = () => {
           {/* Brand & Introduction */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded bg-gold-600 flex items-center justify-center text-forest-900 font-bold font-editorial text-xl shadow">
-                JPW
-              </div>
+              <img
+                src="/logo.png"
+                alt="Jaipur Property Wala Logo"
+                className="w-12 h-12 rounded-full border-2 border-gold-400 object-cover shadow-lg"
+              />
               <div>
                 <h3 className="text-xl font-bold font-editorial tracking-tight text-white">
                   JAIPUR PROPERTY WALA
