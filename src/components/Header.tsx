@@ -13,8 +13,8 @@ import {
   Building2
 } from 'lucide-react';
 
-import { locationService } from '../services/api';
-import { LocationItem } from '../types';
+import { locationService, settingsService } from '../services/api';
+import { LocationItem, WebsiteSettings } from '../types';
 
 interface HeaderProps {
   onOpenEnquiry?: () => void;
@@ -25,6 +25,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
   const [isPropertyDropdownOpen, setIsPropertyDropdownOpen] = useState(false);
   const [isMobilePropAccordionOpen, setIsMobilePropAccordionOpen] = useState(false);
   const [dynamicLocations, setDynamicLocations] = useState<LocationItem[]>([]);
+  const [settings, setSettings] = useState<WebsiteSettings | null>(null);
   const location = useLocation();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
@@ -61,6 +62,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
         }
       })
       .catch((err: any) => console.error('Error fetching locations in header', err));
+
+    settingsService.getSettings()
+      .then((res: any) => {
+        if (res.data?.data) {
+          setSettings(res.data.data);
+        }
+      })
+      .catch((err: any) => console.error('Error fetching settings in header', err));
   }, []);
 
   // Close dropdown on outside click
@@ -104,22 +113,22 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
         <div className="w-full flex flex-wrap justify-between items-center gap-2">
           <div className="flex items-center space-x-4 sm:space-x-6">
             <a
-              href="tel:+919251217568"
+              href={`tel:${(settings?.phone || settings?.alternatePhone || '09828226566').replace(/[^0-9+]/g, '')}`}
               className="flex items-center space-x-1.5 text-gold-400 hover:text-white transition-colors"
             >
               <Phone className="w-3.5 h-3.5 text-gold-500" />
-              <span className="font-bold tracking-wide">+91 92512 17568</span>
+              <span className="font-bold tracking-wide">{settings?.phone || settings?.alternatePhone || '09828226566'}</span>
             </a>
             <a
-              href="mailto:info@jaipurpropertywala.in"
+              href={`mailto:${settings?.email || 'info@jaipurpropertywalaaa.in'}`}
               className="hidden sm:flex items-center space-x-1.5 text-gray-300 hover:text-white transition-colors"
             >
               <Mail className="w-3.5 h-3.5 text-gold-500" />
-              <span>info@jaipurpropertywala.in</span>
+              <span>{settings?.email || 'info@jaipurpropertywalaaa.in'}</span>
             </a>
             <div className="hidden md:flex items-center space-x-1.5 text-gray-300">
               <Clock className="w-3.5 h-3.5 text-gold-500" />
-              <span>Mon - Sun: 9:00 AM - 8:00 PM</span>
+              <span>{settings?.officeTimings || 'Monday - Sunday: 9:00 AM - 10:00 PM'}</span>
             </div>
           </div>
 
