@@ -316,12 +316,49 @@ export const GalleryPage: React.FC = () => {
 
           <div className="max-w-4xl max-h-[85vh] flex flex-col items-center">
             {activeItem.mediaType === 'video' ? (
-              <video
-                src={formatImageUrl(activeItem.mediaUrl)}
-                controls
-                autoPlay
-                className="max-h-[70vh] rounded-2xl shadow-2xl"
-              />
+              (() => {
+                const url = activeItem.mediaUrl || '';
+                const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+                if (ytMatch) {
+                  return (
+                    <div className="w-[90vw] max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black">
+                      <iframe
+                        src={`https://www.youtube-nocookie.com/embed/${ytMatch[1]}?autoplay=1&rel=0`}
+                        title={activeItem.title}
+                        className="w-full h-full border-0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  );
+                }
+                const vimeoMatch = url.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)/);
+                if (vimeoMatch) {
+                  return (
+                    <div className="w-[90vw] max-w-4xl aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black">
+                      <iframe
+                        src={`https://player.vimeo.com/video/${vimeoMatch[3]}?autoplay=1`}
+                        title={activeItem.title}
+                        className="w-full h-full border-0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  );
+                }
+                return (
+                  <video
+                    key={activeItem.mediaUrl}
+                    src={formatImageUrl(activeItem.mediaUrl)}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="max-h-[70vh] max-w-full rounded-2xl shadow-2xl bg-black"
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                );
+              })()
             ) : (
               <img
                 src={formatImageUrl(activeItem.mediaUrl)}
