@@ -256,7 +256,7 @@ export const Footer: React.FC = () => {
             <a href="mailto:hr@orqivatech.com" className="text-gold-400 hover:underline font-semibold">
               Orqiva Tech
             </a>{' '}
-            (<a href={`tel:${cleanPhone}`} className="hover:text-gold-300">{phone}</a>)
+            (<a href="tel:+919251217568" className="hover:text-gold-300">92512 17568</a>)
           </div>
           <div className="flex items-center space-x-6">
             <Link to="/privacy-policy" className="hover:text-gold-400 transition-colors">Privacy Policy</Link>
