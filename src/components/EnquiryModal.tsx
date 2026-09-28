@@ -18,7 +18,7 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
     name: '',
     phone: '',
     email: '',
-    preferredLocation: selectedProperty?.location.area || 'Jaipur',
+    preferredLocation: selectedProperty?.location?.area || 'Jaipur',
     budget: selectedProperty?.priceDisplay || 'Any',
     message: selectedProperty ? `I am interested in ${selectedProperty.title}. Please provide more details and arrange a site visit.` : ''
   });
@@ -26,6 +26,22 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+
+  // Sync form state when modal opens or selectedProperty changes
+  React.useEffect(() => {
+    if (isOpen) {
+      setFormData({
+        name: '',
+        phone: '',
+        email: '',
+        preferredLocation: selectedProperty?.location?.area || 'Jaipur',
+        budget: selectedProperty?.priceDisplay || 'Any',
+        message: selectedProperty ? `I am interested in ${selectedProperty.title}. Please provide more details and arrange a site visit.` : ''
+      });
+      setError('');
+      setSuccess(false);
+    }
+  }, [isOpen, selectedProperty]);
 
   if (!isOpen) return null;
 
@@ -37,13 +53,22 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
     try {
       await enquiryService.create({
         ...formData,
+        propertyId: selectedProperty?._id || undefined,
         interestedProperty: selectedProperty?.title || 'General Enquiry',
-        source: selectedProperty ? `Property Detail: ${selectedProperty.slug}` : 'Website Modal'
+        source: selectedProperty ? `Property Card: ${selectedProperty.slug}` : 'Website Modal'
       });
 
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
+        setFormData({
+          name: '',
+          phone: '',
+          email: '',
+          preferredLocation: 'Jaipur',
+          budget: 'Any',
+          message: ''
+        });
         onClose();
       }, 2500);
     } catch (err: any) {

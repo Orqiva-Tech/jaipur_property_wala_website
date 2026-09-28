@@ -94,12 +94,17 @@ export const PropertyDetailPage: React.FC = () => {
         phone: leadPhone,
         email: leadEmail,
         interestedProperty: property.title,
-        preferredLocation: property.location.area,
-        budget: property.priceDisplay,
+        propertyId: property._id,
+        preferredLocation: property.location?.area || property.location?.city || 'Jaipur',
+        budget: property.priceDisplay || 'Any',
         message: leadMessage || `I want to visit ${property.title}. Please provide full pricing and layout plan.`,
         source: `Property Detail: ${property.slug}`
       });
       setLeadSuccess(true);
+      setLeadName('');
+      setLeadPhone('');
+      setLeadEmail('');
+      setLeadMessage('');
     } catch (err: any) {
       setLeadError(err.response?.data?.message || 'Failed to submit enquiry. Call +91 92512 17568 directly.');
     } finally {
