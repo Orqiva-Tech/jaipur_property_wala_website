@@ -24,13 +24,14 @@ import {
   Clock,
   Building
 } from 'lucide-react';
-import { propertyService, enquiryService, formatImageUrl } from '../services/api';
-import { Property } from '../types';
+import { propertyService, enquiryService, settingsService, formatImageUrl } from '../services/api';
+import { Property, WebsiteSettings } from '../types';
 import { PropertyCard } from '../components/PropertyCard';
 
 export const PropertyDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [property, setProperty] = useState<Property | null>(null);
+  const [settings, setSettings] = useState<WebsiteSettings | null>(null);
   const [related, setRelated] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -71,6 +72,9 @@ export const PropertyDetailPage: React.FC = () => {
     };
 
     fetchDetail();
+    settingsService.getSettings()
+      .then((res: any) => setSettings(res.data?.data || null))
+      .catch(() => {});
     window.scrollTo(0, 0);
   }, [slug]);
 
@@ -106,7 +110,7 @@ export const PropertyDetailPage: React.FC = () => {
       setLeadEmail('');
       setLeadMessage('');
     } catch (err: any) {
-      setLeadError(err.response?.data?.message || 'Failed to submit enquiry. Call +91 92512 17568 directly.');
+      setLeadError(err.response?.data?.message || 'Failed to submit enquiry. Please try again or contact us directly.');
     } finally {
       setSubmitting(false);
     }
@@ -742,22 +746,26 @@ export const PropertyDetailPage: React.FC = () => {
 
             {/* Direct Instant Contact Pills */}
             <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-              <a
-                href="tel:+919251217568"
-                className="flex items-center justify-center space-x-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-forest-950 px-6 py-3.5 rounded-xl font-extrabold text-xs tracking-wider shadow-lg transition-all border border-gold-300"
-              >
-                <Phone className="w-4 h-4" />
-                <span>Call: +91 92512 17568</span>
-              </a>
-              <a
-                href={`https://api.whatsapp.com/send?phone=919251217568&text=Hello%20Jaipur%20Property%20Wala,%20I%20am%20interested%20in%20${encodeURIComponent(property.title)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center space-x-2 bg-[#25D366] hover:bg-[#20BD5A] text-white px-6 py-3.5 rounded-xl font-bold text-xs tracking-wider shadow-lg transition-all"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>WhatsApp Enquiry</span>
-              </a>
+              {(settings?.phone || settings?.alternatePhone) && (
+                <a
+                  href={`tel:${(settings.phone || settings.alternatePhone).replace(/[^0-9+]/g, '')}`}
+                  className="flex items-center justify-center space-x-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-forest-950 px-6 py-3.5 rounded-xl font-extrabold text-xs tracking-wider shadow-lg transition-all border border-gold-300"
+                >
+                  <Phone className="w-4 h-4" />
+                  <span>Call: {settings.phone || settings.alternatePhone}</span>
+                </a>
+              )}
+              {settings?.whatsapp && (
+                <a
+                  href={`https://api.whatsapp.com/send?phone=${settings.whatsapp.replace(/[^0-9]/g, '')}&text=Hello%20Jaipur%20Property%20Wala,%20I%20am%20interested%20in%20${encodeURIComponent(property.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center space-x-2 bg-[#25D366] hover:bg-[#20BD5A] text-white px-6 py-3.5 rounded-xl font-bold text-xs tracking-wider shadow-lg transition-all"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>WhatsApp Enquiry</span>
+                </a>
+              )}
             </div>
           </div>
 
@@ -804,7 +812,7 @@ export const PropertyDetailPage: React.FC = () => {
                     required
                     value={leadPhone}
                     onChange={(e) => setLeadPhone(e.target.value)}
-                    placeholder="+91 92512 17568"
+                    placeholder="0-9"
                     className="w-full p-3 bg-[#06120d] border border-gold-500/30 focus:border-gold-500 rounded-xl text-xs text-white placeholder-stone-500 focus:outline-none"
                   />
                 </div>
@@ -952,12 +960,14 @@ export const PropertyDetailPage: React.FC = () => {
                     <p className="text-xs text-stone-300 max-w-md">
                       Book a free AC cab site visit with our senior Jaipur Property Wala advisor to inspect every demarcated corner in person.
                     </p>
-                    <a
-                      href="tel:+919251217568"
-                      className="px-6 py-2.5 rounded-xl bg-gold-500 text-forest-950 font-extrabold text-xs shadow hover:bg-gold-400"
-                    >
-                      Call +91 92512 17568 for Live Visit
-                    </a>
+                    {(settings?.phone || settings?.alternatePhone) && (
+                      <a
+                        href={`tel:${(settings.phone || settings.alternatePhone).replace(/[^0-9+]/g, '')}`}
+                        className="px-6 py-2.5 rounded-xl bg-gold-500 text-forest-950 font-extrabold text-xs shadow hover:bg-gold-400"
+                      >
+                        Call {settings.phone || settings.alternatePhone} for Live Visit
+                      </a>
+                    )}
                   </div>
                 </div>
               )}

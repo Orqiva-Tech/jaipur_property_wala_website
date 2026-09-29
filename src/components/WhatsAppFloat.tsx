@@ -15,10 +15,12 @@ export const WhatsAppFloat: React.FC = () => {
       .catch((err) => console.warn('WhatsAppFloat settings load error:', err));
   }, []);
 
-  const rawPhone = settings?.phone || settings?.alternatePhone || '9251217568';
+  const rawPhone = settings?.phone || settings?.alternatePhone || '';
   const cleanPhone = rawPhone.replace(/[^0-9+]/g, '');
-  const rawWa = settings?.whatsapp || '919251217568';
+  const rawWa = settings?.whatsapp || '';
   const cleanWa = rawWa.replace(/[^0-9]/g, '');
+
+  if (!cleanPhone && !cleanWa) return null;
 
   return (
     <div className="fixed bottom-6 right-6 z-40 flex flex-col items-center space-y-3">

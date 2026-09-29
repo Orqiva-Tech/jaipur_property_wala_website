@@ -130,13 +130,15 @@ export const AboutPage: React.FC = () => {
               <span>Explore Plots</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
-            <a
-              href="tel:+919251217568"
-              className="px-6 py-3.5 bg-forest-900 hover:bg-forest-800 text-white font-bold rounded-xl text-sm border border-gold-500/40 transition-all flex items-center space-x-2"
-            >
-              <Phone className="w-4 h-4 text-gold-400" />
-              <span>+91 92512 17568</span>
-            </a>
+            {(settings?.phone || settings?.alternatePhone) && (
+              <a
+                href={`tel:${(settings.phone || settings.alternatePhone).replace(/[^0-9+]/g, '')}`}
+                className="px-6 py-3.5 bg-forest-900 hover:bg-forest-800 text-white font-bold rounded-xl text-sm border border-gold-500/40 transition-all flex items-center space-x-2"
+              >
+                <Phone className="w-4 h-4 text-gold-400" />
+                <span>{settings.phone || settings.alternatePhone}</span>
+              </a>
+            )}
           </div>
         </div>
 

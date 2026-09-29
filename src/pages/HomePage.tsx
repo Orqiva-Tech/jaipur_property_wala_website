@@ -13,7 +13,9 @@ import {
   MessageCircle,
   Building,
   KeyRound,
-  FileCheck
+  FileCheck,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { propertyService, blogService, galleryService, settingsService, formatImageUrl } from '../services/api';
 import { Property, Blog, GalleryItem } from '../types';
@@ -30,6 +32,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
   const [galleryPreview, setGalleryPreview] = useState<GalleryItem[]>([]);
   const [settings, setSettings] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const defaultHeroImages = [
+    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=85',
+    'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2000&q=85',
+    'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=85'
+  ];
+
+  const heroMediaType = settings?.hero?.mediaType || 'images';
+  const heroImages = (settings?.hero?.images && settings.hero.images.length > 0)
+    ? settings.hero.images.filter((img: string) => !!img && img.trim() !== '')
+    : defaultHeroImages;
+  const activeHeroImages = heroImages.length > 0 ? heroImages : defaultHeroImages;
 
   useEffect(() => {
     const fetchHomeData = async () => {
@@ -53,39 +68,129 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
     fetchHomeData();
   }, []);
 
+  // Auto transition for 3 images hero slider
+  useEffect(() => {
+    if (heroMediaType === 'video' || activeHeroImages.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % activeHeroImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [heroMediaType, activeHeroImages.length]);
+
   return (
     <div className="space-y-16 lg:space-y-24 bg-[#F8F9F8]">
       
-      {/* SECTION A: Cinematic Hero with High-Contrast Overlay */}
-      <section className="relative min-h-[580px] lg:min-h-[640px] flex flex-col justify-center text-white overflow-hidden">
-        {/* Background Photo */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=85')`
-          }}
-        />
-        {/* Deep, rich dark overlay so text is 100% visible and sharp */}
-        <div className="absolute inset-0 bg-gradient-to-b from-forest-950/95 via-forest-950/90 to-forest-950/95" />
+      {/* SECTION A: Cinematic Hero with Zero Green Overlay (Crystal Clear Image/Video) */}
+      <section className="relative min-h-[580px] lg:min-h-[640px] flex flex-col justify-center text-white overflow-hidden group">
+        {/* Background Media: Video or 3-Image Smooth Slider */}
+        {heroMediaType === 'video' && settings?.hero?.videoUrl ? (
+          <div className="absolute inset-0 overflow-hidden">
+            {settings.hero.videoUrl.includes('youtube.com') || settings.hero.videoUrl.includes('youtu.be') ? (
+              <iframe
+                src={settings.hero.videoUrl.includes('embed') ? `${settings.hero.videoUrl}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0` : settings.hero.videoUrl}
+                title="Hero Video"
+                className="w-full h-full object-cover pointer-events-none scale-125"
+                allow="autoplay; encrypted-media; picture-in-picture"
+              />
+            ) : (
+              <video
+                src={settings.hero.videoUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover scale-105"
+              />
+            )}
+          </div>
+        ) : (
+          <div className="absolute inset-0 overflow-hidden">
+            {activeHeroImages.map((img: string, idx: number) => (
+              <div
+                key={idx}
+                className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out transform ${
+                  idx === currentSlide ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
+                }`}
+                style={{
+                  backgroundImage: `url('${formatImageUrl(img)}')`,
+                  transitionProperty: 'opacity, transform',
+                  transitionDuration: '1000ms'
+                }}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Crystal Clear Dark Gradient Scrim - ZERO GREEN COLOR - Text is crisp & clear */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60 pointer-events-none" />
+
+        {/* Carousel Slide Indicators and Arrow Controls */}
+        {heroMediaType !== 'video' && activeHeroImages.length > 1 && (
+          <>
+            {/* Left / Right Navigation Arrows */}
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev === 0 ? activeHeroImages.length - 1 : prev - 1))}
+              className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-md border border-white/20 items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+              aria-label="Previous Slide"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev + 1) % activeHeroImages.length)}
+              className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-md border border-white/20 items-center justify-center transition-all opacity-0 group-hover:opacity-100"
+              aria-label="Next Slide"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
+            {/* Slide Dots */}
+            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center space-x-2">
+              {activeHeroImages.map((_: any, idx: number) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentSlide(idx)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    idx === currentSlide ? 'w-8 bg-gold-400' : 'w-2 bg-white/50 hover:bg-white/80'
+                  }`}
+                  aria-label={`Slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 text-center">
           
           {/* Trust Badge */}
-          <div className="inline-flex items-center space-x-2 bg-gold-950/80 border border-gold-500/60 backdrop-blur-md px-4 py-1.5 rounded-full mb-6">
+          <div className="inline-flex items-center space-x-2 bg-black/60 border border-gold-400/60 backdrop-blur-md px-4 py-1.5 rounded-full mb-6 shadow-md">
             <ShieldCheck className="w-4 h-4 text-gold-400" />
             <span className="text-xs sm:text-sm font-bold tracking-wider uppercase text-gold-300">
-              100% JDA & RERA Approved Residential & Commercial Plots
+              {settings?.hero?.badge || '100% JDA & RERA Approved Residential & Commercial Plots'}
             </span>
           </div>
 
-          {/* Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold font-editorial tracking-tight text-white max-w-4xl mx-auto leading-tight sm:leading-tight lg:leading-tight mb-5">
-            Discover Verified <span className="text-gold-400">JDA Approved Plots</span> in Jaipur
+          {/* Headline - Admin Editable */}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold font-editorial tracking-tight text-white max-w-4xl mx-auto leading-tight sm:leading-tight lg:leading-tight mb-5 drop-shadow-lg">
+            {settings?.hero?.title ? (
+              settings.hero.title.includes('JDA Approved Plots') ? (
+                <>
+                  {settings.hero.title.split('JDA Approved Plots')[0]}
+                  <span className="text-gold-400">JDA Approved Plots</span>
+                  {settings.hero.title.split('JDA Approved Plots')[1]}
+                </>
+              ) : (
+                settings.hero.title
+              )
+            ) : (
+              <>
+                Discover Verified <span className="text-gold-400">JDA Approved Plots</span> in Jaipur
+              </>
+            )}
           </h1>
 
-          {/* Subtitle */}
-          <p className="text-sm sm:text-lg text-gray-200 max-w-3xl mx-auto font-normal leading-relaxed mb-8">
-            Buy residential and commercial plots starting from ₹15 Lakhs with spot registry and 80% pre-approved bank loans. Prime schemes in Jagatpura, Mahindra SEZ, Tonk Road & Ajmer Expressway.
+          {/* Subtitle - Admin Editable */}
+          <p className="text-sm sm:text-lg text-stone-100 max-w-3xl mx-auto font-normal leading-relaxed mb-8 drop-shadow">
+            {settings?.hero?.subtitle || 'Buy residential and commercial plots starting from ₹15 Lakhs with spot registry and 80% pre-approved bank loans. Prime schemes in Jagatpura, Mahindra SEZ, Tonk Road & Ajmer Expressway.'}
           </p>
 
           {/* Action CTAs */}
@@ -99,34 +204,34 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
             </Link>
             <button
               onClick={() => onOpenEnquiry()}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-forest-900/90 hover:bg-forest-800 text-white font-semibold text-sm tracking-wide border border-gold-500/40 backdrop-blur-md transition-all duration-200 flex items-center justify-center space-x-2"
+              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-black/50 hover:bg-black/70 text-white font-semibold text-sm tracking-wide border border-gold-400/50 backdrop-blur-md transition-all duration-200 flex items-center justify-center space-x-2"
             >
               <Phone className="w-4 h-4 text-gold-400" />
               <span>Book Free Site Visit Cab</span>
             </button>
           </div>
 
-          {/* Key Facts / Metric Counters - Live Real Data from Admin */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-6 border-t border-white/15 text-center">
-            <div className="p-3.5 bg-forest-900/70 rounded-xl border border-white/15">
+          {/* Key Facts / Metric Counters - Clean Glassmorphism without green tint */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-6 border-t border-white/20 text-center">
+            <div className="p-3.5 bg-black/45 backdrop-blur-md rounded-xl border border-white/20 shadow-md">
               <span className="block text-2xl sm:text-3xl font-bold font-editorial text-gold-400">
                 {settings?.stats?.yearsExperience || '20+'}
               </span>
               <span className="text-xs text-gray-200 font-semibold uppercase tracking-wider">Years Experience</span>
             </div>
-            <div className="p-3.5 bg-forest-900/70 rounded-xl border border-white/15">
+            <div className="p-3.5 bg-black/45 backdrop-blur-md rounded-xl border border-white/20 shadow-md">
               <span className="block text-2xl sm:text-3xl font-bold font-editorial text-gold-400">
                 {settings?.stats?.satisfiedClients || '4,500+'}
               </span>
               <span className="text-xs text-gray-200 font-semibold uppercase tracking-wider">Satisfied Families</span>
             </div>
-            <div className="p-3.5 bg-forest-900/70 rounded-xl border border-white/15">
+            <div className="p-3.5 bg-black/45 backdrop-blur-md rounded-xl border border-white/20 shadow-md">
               <span className="block text-2xl sm:text-3xl font-bold font-editorial text-gold-400">
                 {settings?.stats?.jdaPlotsSold || '3,200+'}
               </span>
               <span className="text-xs text-gray-200 font-semibold uppercase tracking-wider">JDA Plots Handed</span>
             </div>
-            <div className="p-3.5 bg-forest-900/70 rounded-xl border border-white/15">
+            <div className="p-3.5 bg-black/45 backdrop-blur-md rounded-xl border border-white/20 shadow-md">
               <span className="block text-2xl sm:text-3xl font-bold font-editorial text-gold-400">
                 {settings?.stats?.bankLoanApproval || '80% All Banks'}
               </span>
@@ -263,13 +368,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
                 >
                   Learn Our History
                 </Link>
-                <a
-                  href="tel:+919251217568"
-                  className="px-6 py-3 rounded-xl border-2 border-forest-950 text-forest-950 hover:bg-forest-950 hover:text-white text-xs font-bold tracking-wide transition-all flex items-center space-x-2"
-                >
-                  <Phone className="w-3.5 h-3.5 text-gold-600" />
-                  <span>Call +91 92512 17568</span>
-                </a>
+                {(settings?.phone || settings?.alternatePhone) && (
+                  <a
+                    href={`tel:${(settings.phone || settings.alternatePhone).replace(/[^0-9+]/g, '')}`}
+                    className="px-6 py-3 rounded-xl border-2 border-forest-950 text-forest-950 hover:bg-forest-950 hover:text-white text-xs font-bold tracking-wide transition-all flex items-center space-x-2"
+                  >
+                    <Phone className="w-3.5 h-3.5 text-gold-600" />
+                    <span>Call {settings.phone || settings.alternatePhone}</span>
+                  </a>
+                )}
               </div>
             </div>
 
@@ -553,13 +660,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
                 <span>Request Free Callback</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
-              <a
-                href="tel:+919251217568"
-                className="px-8 py-3.5 rounded-xl bg-forest-900 hover:bg-forest-800 text-white border border-gold-500/50 text-sm font-bold flex items-center justify-center space-x-2"
-              >
-                <Phone className="w-4 h-4 text-gold-400" />
-                <span>Call Now: +91 92512 17568</span>
-              </a>
+              {(settings?.phone || settings?.alternatePhone) && (
+                <a
+                  href={`tel:${(settings.phone || settings.alternatePhone).replace(/[^0-9+]/g, '')}`}
+                  className="px-8 py-3.5 rounded-xl bg-forest-900 hover:bg-forest-800 text-white border border-gold-500/50 text-sm font-bold flex items-center justify-center space-x-2"
+                >
+                  <Phone className="w-4 h-4 text-gold-400" />
+                  <span>Call Now: {settings.phone || settings.alternatePhone}</span>
+                </a>
+              )}
             </div>
           </div>
         </div>

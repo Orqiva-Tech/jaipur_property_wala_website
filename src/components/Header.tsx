@@ -409,10 +409,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
 
                 <div className="p-3 bg-forest-50 rounded-xl space-y-2 text-xs text-forest-950">
                   <div className="font-bold text-[11px] tracking-wider uppercase text-gold-800">Official Contact</div>
-                  <a href="tel:+919251217568" className="flex items-center space-x-2 font-bold text-forest-900">
-                    <Phone className="w-3.5 h-3.5 text-gold-600" />
-                    <span>+91 92512 17568</span>
-                  </a>
+                  {(settings?.phone || settings?.alternatePhone) && (
+                    <a href={`tel:${(settings.phone || settings.alternatePhone).replace(/[^0-9+]/g, '')}`} className="flex items-center space-x-2 font-bold text-forest-900">
+                      <Phone className="w-3.5 h-3.5 text-gold-600" />
+                      <span>{settings.phone || settings.alternatePhone}</span>
+                    </a>
+                  )}
                   <a href="mailto:info@jaipurpropertywala.in" className="flex items-center space-x-2 text-charcoal-700">
                     <Mail className="w-3.5 h-3.5 text-gold-600" />
                     <span>info@jaipurpropertywala.in</span>

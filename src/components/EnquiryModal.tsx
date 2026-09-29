@@ -72,7 +72,7 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
         onClose();
       }, 2500);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to submit enquiry. Please call us directly at +91 92512 17568.');
+      setError(err.response?.data?.message || 'Failed to submit enquiry. Please try again or contact us directly.');
     } finally {
       setLoading(false);
     }
@@ -151,7 +151,7 @@ export const EnquiryModal: React.FC<EnquiryModalProps> = ({
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+91 92512 17568"
+                      placeholder="0-9"
                       className="w-full pl-9 pr-3 py-2.5 bg-white border border-stone-300 rounded-lg text-sm text-forest-950 font-medium focus:ring-2 focus:ring-forest-900 focus:outline-none"
                     />
                   </div>

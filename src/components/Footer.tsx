@@ -17,7 +17,7 @@ export const Footer: React.FC = () => {
       .catch((err) => console.warn('Footer settings load error:', err));
   }, []);
 
-  const phone = settings?.phone || settings?.alternatePhone || '9251217568';
+  const phone = settings?.phone || settings?.alternatePhone || '';
   const cleanPhone = phone.replace(/[^0-9+]/g, '');
   const email = settings?.email || 'info@jaipurpropertywala.in';
   const address = settings?.address || 'Livasha Flat No.301, Mahal Yojna, Mahal Road Scheme, Jagatpura, Jaipur - 302017, Rajasthan';
@@ -255,8 +255,7 @@ export const Footer: React.FC = () => {
             Digital Partner:{' '}
             <a href="mailto:hr@orqivatech.com" className="text-gold-400 hover:underline font-semibold">
               Orqiva Tech
-            </a>{' '}
-            (<a href="tel:+919251217568" className="hover:text-gold-300">92512 17568</a>)
+            </a>
           </div>
           <div className="flex items-center space-x-6">
             <Link to="/privacy-policy" className="hover:text-gold-400 transition-colors">Privacy Policy</Link>

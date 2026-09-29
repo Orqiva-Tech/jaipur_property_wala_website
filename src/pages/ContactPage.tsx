@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, Clock, MessageCircle, Send, CheckCircle2, AlertCircle, ShieldCheck } from 'lucide-react';
-import { enquiryService } from '../services/api';
+import { enquiryService, settingsService } from '../services/api';
+import { WebsiteSettings } from '../types';
 
 export const ContactPage: React.FC = () => {
+  const [settings, setSettings] = useState<WebsiteSettings | null>(null);
+
+  useEffect(() => {
+    settingsService.getSettings()
+      .then((res: any) => setSettings(res.data?.data || null))
+      .catch(() => {});
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -38,7 +47,7 @@ export const ContactPage: React.FC = () => {
         message: ''
       });
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to submit enquiry. Please call us directly at +91 92512 17568.');
+      setError(err.response?.data?.message || 'Failed to submit enquiry. Please try again or contact us directly.');
     } finally {
       setLoading(false);
     }
@@ -111,32 +120,36 @@ export const ContactPage: React.FC = () => {
               </div>
 
               <div className="space-y-3 text-sm">
-                <div>
-                  <span className="text-xs text-charcoal-600 block font-semibold">Primary Contact:</span>
-                  <a href="tel:+919251217568" className="text-lg font-extrabold text-forest-950 hover:text-gold-700 transition-colors">
-                    +91 92512 17568
-                  </a>
-                </div>
+                {(settings?.phone || settings?.alternatePhone) && (
+                  <div>
+                    <span className="text-xs text-charcoal-600 block font-semibold">Primary Contact:</span>
+                    <a href={`tel:${(settings.phone || settings.alternatePhone).replace(/[^0-9+]/g, '')}`} className="text-lg font-extrabold text-forest-950 hover:text-gold-700 transition-colors">
+                      {settings.phone || settings.alternatePhone}
+                    </a>
+                  </div>
+                )}
 
                 <div>
                   <span className="text-xs text-charcoal-600 block font-semibold">Official Email:</span>
-                  <a href="mailto:info@jaipurpropertywala.in" className="text-sm font-bold text-forest-900 hover:text-gold-700">
-                    info@jaipurpropertywala.in
+                  <a href={`mailto:${settings?.email || 'info@jaipurpropertywala.in'}`} className="text-sm font-bold text-forest-900 hover:text-gold-700">
+                    {settings?.email || 'info@jaipurpropertywala.in'}
                   </a>
                 </div>
               </div>
 
-              <div className="pt-2">
-                <a
-                  href="https://api.whatsapp.com/send?phone=919251217568&text=Hello%20Jaipur%20Property%20Wala,%20I%20would%20like%20to%20enquire%20about%20JDA%20plots."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] text-white text-xs font-bold shadow flex items-center justify-center space-x-2 transition-all"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Start WhatsApp Consultation</span>
-                </a>
-              </div>
+              {settings?.whatsapp && (
+                <div className="pt-2">
+                  <a
+                    href={`https://api.whatsapp.com/send?phone=${settings.whatsapp.replace(/[^0-9]/g, '')}&text=Hello%20Jaipur%20Property%20Wala,%20I%20would%20like%20to%20enquire%20about%20JDA%20plots.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3.5 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] text-white text-xs font-bold shadow flex items-center justify-center space-x-2 transition-all"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Start WhatsApp Consultation</span>
+                  </a>
+                </div>
+              )}
             </div>
 
             {/* Operating Hours */}
@@ -221,7 +234,7 @@ export const ContactPage: React.FC = () => {
                         required
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="+91 92512 17568"
+                        placeholder="0-9"
                         className="form-input-luxury"
                       />
                     </div>
