@@ -253,7 +253,12 @@ export const Footer: React.FC = () => {
           </div>
           <div className="text-xs text-gray-300">
             Digital Partner:{' '}
-            <a href="mailto:hr@orqivatech.com" className="text-gold-400 hover:underline font-semibold">
+            <a
+              href="https://www.orqivatech.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gold-400 hover:underline font-semibold"
+            >
               Orqiva Tech
             </a>
           </div>
