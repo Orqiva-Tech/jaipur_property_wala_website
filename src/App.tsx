@@ -59,7 +59,7 @@ export const App: React.FC = () => {
                   The Admin Control Panel is hosted on its dedicated secure management portal.
                 </p>
                 <a
-                  href={import.meta.env.VITE_ADMIN_PORTAL_URL || 'https://adminproperti.dobhi.in'}
+                  href={import.meta.env.VITE_ADMIN_PORTAL_URL || 'https://admin.jaipurpropertywala.in'}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-gold-500 to-amber-600 text-forest-950 font-bold text-xs uppercase tracking-wider shadow hover:scale-105 transition-transform"
