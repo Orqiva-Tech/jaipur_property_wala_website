@@ -40,11 +40,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
     'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=85'
   ];
 
-  const heroMediaType = settings?.hero?.mediaType || 'images';
-  const heroImages = (settings?.hero?.images && settings.hero.images.length > 0)
-    ? settings.hero.images.filter((img: string) => !!img && img.trim() !== '')
+  const fallbackHero = {
+    mediaType: 'video',
+    videoUrl: 'https://res.cloudinary.com/ripzq8zx/video/upload/v1790697565/jaipur_property_wala/properties/qdyelhnra5xxhk1oetct.mp4',
+    badge: '100% JDA & RERA Approved Residential & Commercial Plots',
+    title: 'Discover Verified JDA Approved Plots in Jaipur',
+    subtitle: 'Buy residential and commercial plots starting from ₹15 Lakhs with spot registry and 80% pre-approved bank loans. Prime schemes in Jagatpura, Mahindra SEZ, Tonk Road & Ajmer Expressway.'
+  };
+
+  const effectiveHero = settings?.hero || fallbackHero;
+  const heroMediaType = effectiveHero?.mediaType || (effectiveHero?.videoUrl ? 'video' : 'images');
+  const heroImages = (effectiveHero?.images && effectiveHero.images.length > 0)
+    ? effectiveHero.images.filter((img: string) => !!img && img.trim() !== '')
     : defaultHeroImages;
   const activeHeroImages = heroImages.length > 0 ? heroImages : defaultHeroImages;
+  const heroVideoUrl = effectiveHero?.videoUrl;
 
   useEffect(() => {
     const fetchHomeData = async () => {
@@ -83,18 +93,18 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
       {/* SECTION A: Cinematic Hero with Zero Green Overlay (Crystal Clear Image/Video) */}
       <section className="relative min-h-[580px] lg:min-h-[640px] flex flex-col justify-center text-white overflow-hidden group">
         {/* Background Media: Video or 3-Image Smooth Slider */}
-        {heroMediaType === 'video' && settings?.hero?.videoUrl ? (
+        {heroMediaType === 'video' && heroVideoUrl ? (
           <div className="absolute inset-0 overflow-hidden">
-            {settings.hero.videoUrl.includes('youtube.com') || settings.hero.videoUrl.includes('youtu.be') ? (
+            {heroVideoUrl.includes('youtube.com') || heroVideoUrl.includes('youtu.be') ? (
               <iframe
-                src={settings.hero.videoUrl.includes('embed') ? `${settings.hero.videoUrl}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0` : settings.hero.videoUrl}
+                src={heroVideoUrl.includes('embed') ? `${heroVideoUrl}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0` : heroVideoUrl}
                 title="Hero Video"
                 className="w-full h-full object-cover pointer-events-none scale-125"
                 allow="autoplay; encrypted-media; picture-in-picture"
               />
             ) : (
               <video
-                src={settings.hero.videoUrl}
+                src={heroVideoUrl}
                 autoPlay
                 loop
                 muted
@@ -165,21 +175,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
           <div className="inline-flex items-center space-x-2 bg-black/60 border border-gold-400/60 backdrop-blur-md px-4 py-1.5 rounded-full mb-6 shadow-md">
             <ShieldCheck className="w-4 h-4 text-gold-400" />
             <span className="text-xs sm:text-sm font-bold tracking-wider uppercase text-gold-300">
-              {settings?.hero?.badge || '100% JDA & RERA Approved Residential & Commercial Plots'}
+              {effectiveHero?.badge || '100% JDA & RERA Approved Residential & Commercial Plots'}
             </span>
           </div>
 
           {/* Headline - Admin Editable */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold font-editorial tracking-tight text-white max-w-4xl mx-auto leading-tight sm:leading-tight lg:leading-tight mb-5 drop-shadow-lg">
-            {settings?.hero?.title ? (
-              settings.hero.title.includes('JDA Approved Plots') ? (
+            {effectiveHero?.title ? (
+              effectiveHero.title.includes('JDA Approved Plots') ? (
                 <>
-                  {settings.hero.title.split('JDA Approved Plots')[0]}
+                  {effectiveHero.title.split('JDA Approved Plots')[0]}
                   <span className="text-gold-400">JDA Approved Plots</span>
-                  {settings.hero.title.split('JDA Approved Plots')[1]}
+                  {effectiveHero.title.split('JDA Approved Plots')[1]}
                 </>
               ) : (
-                settings.hero.title
+                effectiveHero.title
               )
             ) : (
               <>
@@ -190,7 +200,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
 
           {/* Subtitle - Admin Editable */}
           <p className="text-sm sm:text-lg text-stone-100 max-w-3xl mx-auto font-normal leading-relaxed mb-8 drop-shadow">
-            {settings?.hero?.subtitle || 'Buy residential and commercial plots starting from ₹15 Lakhs with spot registry and 80% pre-approved bank loans. Prime schemes in Jagatpura, Mahindra SEZ, Tonk Road & Ajmer Expressway.'}
+            {effectiveHero?.subtitle || 'Buy residential and commercial plots starting from ₹15 Lakhs with spot registry and 80% pre-approved bank loans. Prime schemes in Jagatpura, Mahindra SEZ, Tonk Road & Ajmer Expressway.'}
           </p>
 
           {/* Action CTAs */}
