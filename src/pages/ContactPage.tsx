@@ -94,7 +94,7 @@ export const ContactPage: React.FC = () => {
               </div>
 
               <p className="text-sm text-charcoal-800 leading-relaxed font-medium">
-                Livasha Flat No.301, Mahal Yojna, Mahal Road Scheme, Jagatpura, Jaipur - 302017, Rajasthan.
+                {settings?.address || 'Livasha Flat No.301, Mahal Yojna, Mahal Road Scheme, Jagatpura, Jaipur - 302017, Rajasthan.'}
               </p>
 
               <div className="pt-2 text-xs text-charcoal-700 space-y-1.5 border-t border-stone-200 font-medium">
@@ -120,11 +120,32 @@ export const ContactPage: React.FC = () => {
               </div>
 
               <div className="space-y-3 text-sm">
-                {(settings?.phone || settings?.alternatePhone) && (
+                <div>
+                  <span className="text-xs text-charcoal-600 block font-semibold">Primary Contact:</span>
+                  <a href={`tel:${(settings?.phone || settings?.alternatePhone || '09828226566').replace(/[^0-9+]/g, '')}`} className="text-lg font-extrabold text-forest-950 hover:text-gold-700 transition-colors">
+                    {settings?.phone || settings?.alternatePhone || '09828226566'}
+                  </a>
+                </div>
+
+                {settings?.alternatePhone && settings?.phone && (
                   <div>
-                    <span className="text-xs text-charcoal-600 block font-semibold">Primary Contact:</span>
-                    <a href={`tel:${(settings.phone || settings.alternatePhone).replace(/[^0-9+]/g, '')}`} className="text-lg font-extrabold text-forest-950 hover:text-gold-700 transition-colors">
-                      {settings.phone || settings.alternatePhone}
+                    <span className="text-xs text-charcoal-600 block font-semibold">Secondary Helpline:</span>
+                    <a href={`tel:${settings.alternatePhone.replace(/[^0-9+]/g, '')}`} className="text-base font-extrabold text-forest-950 hover:text-gold-700 transition-colors">
+                      {settings.alternatePhone}
+                    </a>
+                  </div>
+                )}
+
+                {settings?.whatsapp && (
+                  <div>
+                    <span className="text-xs text-charcoal-600 block font-semibold">WhatsApp Number:</span>
+                    <a
+                      href={`https://api.whatsapp.com/send?phone=${settings.whatsapp.replace(/[^0-9]/g, '')}&text=Hello%20Jaipur%20Property%20Wala,%20I%20would%20like%20to%20enquire%20about%20JDA%20plots.`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-base font-bold text-emerald-700 hover:text-emerald-800 transition-colors"
+                    >
+                      +{settings.whatsapp.replace(/[^0-9]/g, '')}
                     </a>
                   </div>
                 )}
@@ -159,7 +180,7 @@ export const ContactPage: React.FC = () => {
                 <span>Office & Site Visit Timings</span>
               </div>
               <p className="text-base font-bold font-editorial text-white">
-                Monday to Sunday: 9:00 AM – 8:00 PM
+                {settings?.officeTimings || 'Monday to Sunday: 9:00 AM – 8:00 PM'}
               </p>
               <p className="text-xs text-gray-200 leading-relaxed font-normal">
                 Site visits are organized throughout the week including Sundays with dedicated pick-and-drop AC cab service.
@@ -339,7 +360,7 @@ export const ContactPage: React.FC = () => {
         <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-stone-300 aspect-[21/9]">
           <iframe
             title="Jaipur Property Wala Office Map"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d113941.51733246473!2d75.76839352932943!3d26.818814524458826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396dc9e208b0beab%3A0xe542fe882433e387!2sJagatpura%2C%20Jaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+            src={settings?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d113941.51733246473!2d75.76839352932943!3d26.818814524458826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396dc9e208b0beab%3A0xe542fe882433e387!2sJagatpura%2C%20Jaipur%2C%20Rajasthan!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"}
             className="w-full h-full border-0"
             loading="lazy"
           />
