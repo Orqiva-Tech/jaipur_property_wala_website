@@ -63,7 +63,8 @@ export const PropertiesPage: React.FC<PropertiesPageProps> = ({ onOpenEnquiry })
       setLoading(true);
       try {
         const params: Record<string, any> = {
-          sort
+          sort,
+          limit: 'all'
         };
         if (search) params.search = search;
         if (city && city !== 'All') params.city = city;
