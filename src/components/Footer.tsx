@@ -252,7 +252,7 @@ export const Footer: React.FC = () => {
             © {new Date().getFullYear()} <span className="text-gold-400 font-semibold">{companyName}</span>. All Rights Reserved.
           </div>
           <div className="text-xs text-gray-300">
-            Digital Partner:{' '}
+            Designed by:{' '}
             <a
               href="https://www.orqivatech.com/"
               target="_blank"
