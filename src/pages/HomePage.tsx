@@ -106,7 +106,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
               />
             ) : (
               <video
-                src={heroVideoUrl}
+                src={formatImageUrl(heroVideoUrl)}
                 autoPlay
                 loop
                 muted
