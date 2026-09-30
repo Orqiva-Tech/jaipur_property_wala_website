@@ -41,7 +41,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
   ];
 
   const fallbackHero = {
-    mediaType: 'video',
+    mediaType: 'images',
+    images: defaultHeroImages,
     videoUrl: 'https://res.cloudinary.com/ripzq8zx/video/upload/v1790697565/jaipur_property_wala/properties/qdyelhnra5xxhk1oetct.mp4',
     badge: '100% JDA & RERA Approved Residential & Commercial Plots',
     title: 'Discover Verified JDA Approved Plots in Jaipur',
@@ -49,7 +50,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
   };
 
   const effectiveHero = settings?.hero || fallbackHero;
-  const heroMediaType = effectiveHero?.mediaType || (effectiveHero?.videoUrl ? 'video' : 'images');
+  // If user chose 'images', strictly render images slider. Only play video if mediaType is explicitly 'video'
+  const heroMediaType = (effectiveHero?.mediaType === 'video' && effectiveHero?.videoUrl) ? 'video' : 'images';
   const heroImages = (effectiveHero?.images && effectiveHero.images.length > 0)
     ? effectiveHero.images.filter((img: string) => !!img && img.trim() !== '')
     : defaultHeroImages;
