@@ -28,6 +28,7 @@ interface HomePageProps {
 
 export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
   const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
+  const [latestTownships, setLatestTownships] = useState<Property[]>([]);
   const [recentBlogs, setRecentBlogs] = useState<Blog[]>([]);
   const [galleryPreview, setGalleryPreview] = useState<GalleryItem[]>([]);
   const [settings, setSettings] = useState<any>(null);
@@ -61,13 +62,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const [propsRes, blogsRes, galleryRes, settingsRes] = await Promise.all([
+        const [propsRes, latestPropsRes, blogsRes, galleryRes, settingsRes] = await Promise.all([
           propertyService.getFeatured(),
+          propertyService.getAll({ limit: 3 }),
           blogService.getAll({ limit: 3 }),
           galleryService.getAll(),
           settingsService.getSettings().catch(() => ({ data: { data: null } }))
         ]);
         setFeaturedProperties(propsRes.data.data || []);
+        setLatestTownships(latestPropsRes.data.data?.slice(0, 3) || []);
         setRecentBlogs(blogsRes.data.data?.slice(0, 3) || []);
         setGalleryPreview(galleryRes.data.data?.slice(0, 4) || []);
         setSettings(settingsRes.data?.data || null);
@@ -469,89 +472,78 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Project 1 */}
-            <div className="bg-forest-900 rounded-2xl overflow-hidden border border-forest-800 p-6 space-y-4 hover:border-gold-500/50 transition-all">
-              <div className="h-48 rounded-xl overflow-hidden relative">
-                <img
-                  src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
-                  alt="VRB World City"
-                  className="w-full h-full object-cover"
-                />
-                <span className="absolute top-3 left-3 bg-gold-600 text-forest-950 text-[10px] font-bold uppercase px-2.5 py-1 rounded">
-                  Mahindra SEZ
-                </span>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold font-editorial text-white">VRB World City</h3>
-                <p className="text-xs text-gold-300 font-semibold">Ajmer Expressway Corridor</p>
-              </div>
-              <p className="text-xs text-gray-200 leading-relaxed">
-                Planned mega township with commercial complexes, meditation centers, and sizes from 111 to 200+ Sq. Yards.
-              </p>
-              <Link
-                to="/properties/vrb-world-city-mahendra-sez-jaipur"
-                className="inline-flex items-center space-x-1.5 text-xs font-bold text-gold-400 hover:text-white"
+            {((latestTownships && latestTownships.length > 0) ? latestTownships.slice(0, 3) : [
+              {
+                _id: 'default-1',
+                title: 'VRB World City',
+                tagline: 'Ajmer Expressway Corridor',
+                description: 'Planned mega township with commercial complexes, meditation centers, and sizes from 111 to 200+ Sq. Yards.',
+                location: { area: 'Mahindra SEZ', city: 'Jaipur' },
+                images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'],
+                slug: 'vrb-world-city-mahendra-sez-jaipur',
+                status: 'Ongoing'
+              },
+              {
+                _id: 'default-2',
+                title: 'Bombay Hospital Plots',
+                tagline: 'Near Mahal Road & Ring Road',
+                description: 'Ready-to-move residential plots surrounded by coaching institutions, hospitals, and 15 mins to Airport.',
+                location: { area: 'Jagatpura', city: 'Jaipur' },
+                images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'],
+                slug: 'jaipur-bombay-hospital-plots-jagatpura',
+                status: 'Ready Possession'
+              },
+              {
+                _id: 'default-3',
+                title: 'Riyasat Eco Park',
+                tagline: 'Main Highway Corridor',
+                description: 'Serene nature living with herbal plantations, gated compound, sweet water supply, and high-yield appreciation.',
+                location: { area: 'Tonk Road Vatika', city: 'Jaipur' },
+                images: ['https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80'],
+                slug: 'riyasat-eco-park-tonk-road-vatika',
+                status: 'New Launch'
+              }
+            ]).map((project: any, idx: number) => (
+              <div
+                key={project._id || project.slug || idx}
+                className="bg-forest-900 rounded-2xl overflow-hidden border border-forest-800 p-6 space-y-4 hover:border-gold-500/50 transition-all flex flex-col justify-between"
               >
-                <span>View Full Details</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            {/* Project 2 */}
-            <div className="bg-forest-900 rounded-2xl overflow-hidden border border-forest-800 p-6 space-y-4 hover:border-gold-500/50 transition-all">
-              <div className="h-48 rounded-xl overflow-hidden relative">
-                <img
-                  src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-                  alt="Bombay Hospital Scheme"
-                  className="w-full h-full object-cover"
-                />
-                <span className="absolute top-3 left-3 bg-gold-600 text-forest-950 text-[10px] font-bold uppercase px-2.5 py-1 rounded">
-                  Jagatpura
-                </span>
+                <div className="space-y-4">
+                  <div className="h-48 rounded-xl overflow-hidden relative">
+                    <img
+                      src={formatImageUrl(project.images?.[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80')}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                      loading="lazy"
+                    />
+                    <span className="absolute top-3 left-3 bg-gold-600 text-forest-950 text-[10px] font-bold uppercase px-2.5 py-1 rounded shadow-sm">
+                      {project.location?.area || project.location?.city || 'Jaipur'}
+                    </span>
+                    {project.status && (
+                      <span className="absolute top-3 right-3 bg-forest-950/80 backdrop-blur-xs text-gold-400 border border-gold-500/30 text-[10px] font-bold uppercase px-2 py-0.5 rounded">
+                        {project.status}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold font-editorial text-white line-clamp-1">{project.title}</h3>
+                    <p className="text-xs text-gold-300 font-semibold line-clamp-1">
+                      {project.tagline || (project.location?.area ? `${project.location.area}${project.location?.city ? ', ' + project.location.city : ''}` : 'Prime Corridor')}
+                    </p>
+                  </div>
+                  <p className="text-xs text-gray-200 leading-relaxed line-clamp-3">
+                    {project.description || 'Verified JDA approved plotted development with prime connectivity and ready possession.'}
+                  </p>
+                </div>
+                <Link
+                  to={`/properties/${project.slug || project._id}`}
+                  className="inline-flex items-center space-x-1.5 text-xs font-bold text-gold-400 hover:text-white transition-colors pt-2"
+                >
+                  <span>View Full Details</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
-              <div>
-                <h3 className="text-xl font-bold font-editorial text-white">Bombay Hospital Plots</h3>
-                <p className="text-xs text-gold-300 font-semibold">Near Mahal Road & Ring Road</p>
-              </div>
-              <p className="text-xs text-gray-200 leading-relaxed">
-                Ready-to-move residential plots surrounded by coaching institutions, hospitals, and 15 mins to Airport.
-              </p>
-              <Link
-                to="/properties/jaipur-bombay-hospital-plots-jagatpura"
-                className="inline-flex items-center space-x-1.5 text-xs font-bold text-gold-400 hover:text-white"
-              >
-                <span>View Full Details</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            {/* Project 3 */}
-            <div className="bg-forest-900 rounded-2xl overflow-hidden border border-forest-800 p-6 space-y-4 hover:border-gold-500/50 transition-all">
-              <div className="h-48 rounded-xl overflow-hidden relative">
-                <img
-                  src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80"
-                  alt="Riyasat Eco Park"
-                  className="w-full h-full object-cover"
-                />
-                <span className="absolute top-3 left-3 bg-gold-600 text-forest-950 text-[10px] font-bold uppercase px-2.5 py-1 rounded">
-                  Tonk Road Vatika
-                </span>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold font-editorial text-white">Riyasat Eco Park</h3>
-                <p className="text-xs text-gold-300 font-semibold">Main Highway Corridor</p>
-              </div>
-              <p className="text-xs text-gray-200 leading-relaxed">
-                Serene nature living with herbal plantations, gated compound, sweet water supply, and high-yield appreciation.
-              </p>
-              <Link
-                to="/properties/riyasat-eco-park-tonk-road-vatika"
-                className="inline-flex items-center space-x-1.5 text-xs font-bold text-gold-400 hover:text-white"
-              >
-                <span>View Full Details</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
+            ))}
           </div>
         </div>
       </section>
