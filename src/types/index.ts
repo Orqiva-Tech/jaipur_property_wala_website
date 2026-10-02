@@ -139,6 +139,23 @@ export interface HeroSettings {
   subtitle?: string;
 }
 
+export interface AboutSectionPoint {
+  title: string;
+  description: string;
+}
+
+export interface AboutSectionSettings {
+  badge: string;
+  title: string;
+  description: string;
+  image: string;
+  imageTag: string;
+  imageQuote: string;
+  experienceYears: string;
+  experienceText: string;
+  points: AboutSectionPoint[];
+}
+
 export interface WebsiteSettings {
   companyName: string;
   logoUrl?: string;
@@ -151,6 +168,7 @@ export interface WebsiteSettings {
   officeTimings: string;
   mapEmbedUrl: string;
   hero?: HeroSettings;
+  aboutSection?: AboutSectionSettings;
   stats: {
     yearsExperience: string;
     satisfiedClients: string;

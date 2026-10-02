@@ -19,6 +19,7 @@ import { BlogDetailPage } from './pages/BlogDetailPage';
 import { ContactPage } from './pages/ContactPage';
 import { PrivacyTerms } from './pages/PrivacyTerms';
 import { Property } from './types';
+import { SettingsProvider } from './context/SettingsContext';
 
 const PublicLayout: React.FC<{ children: React.ReactNode; onOpenEnquiry: (p?: Property) => void }> = ({
   children,
@@ -44,7 +45,8 @@ export const App: React.FC = () => {
   };
 
   return (
-    <Router>
+    <SettingsProvider>
+      <Router>
       <Routes>
         {/* Admin Redirect to Dedicated Standalone Admin Portal */}
         <Route
@@ -102,6 +104,7 @@ export const App: React.FC = () => {
         selectedProperty={targetProperty}
       />
     </Router>
+  </SettingsProvider>
   );
 };
 

@@ -118,12 +118,70 @@ export const blogService = {
   delete: (id: string) => api.delete(`/blogs/admin/${id}`)
 };
 
+let locationsPromise: Promise<any> | null = null;
+let locationsCache: any = null;
+let locationsCacheTime = 0;
+const LOCATIONS_CACHE_TTL = 5 * 60 * 1000;
+
 export const locationService = {
-  getAll: (params?: Record<string, any>) => api.get('/locations', { params })
+  getAll: (params?: Record<string, any>, forceRefresh = false) => {
+    if (params && Object.keys(params).length > 0) {
+      return api.get('/locations', { params });
+    }
+    const now = Date.now();
+    if (!forceRefresh && locationsCache && (now - locationsCacheTime < LOCATIONS_CACHE_TTL)) {
+      return Promise.resolve({ data: { data: locationsCache } });
+    }
+    if (!forceRefresh && locationsPromise) {
+      return locationsPromise;
+    }
+    locationsPromise = api.get('/locations')
+      .then((res) => {
+        locationsCache = res.data?.data;
+        locationsCacheTime = Date.now();
+        locationsPromise = null;
+        return res;
+      })
+      .catch((err) => {
+        locationsPromise = null;
+        throw err;
+      });
+    return locationsPromise;
+  }
 };
 
+let settingsPromise: Promise<any> | null = null;
+let settingsCache: any = null;
+let settingsCacheTime = 0;
+const SETTINGS_CACHE_TTL = 5 * 60 * 1000;
+
 export const settingsService = {
-  getSettings: () => api.get('/settings')
+  getSettings: (forceRefresh = false) => {
+    const now = Date.now();
+    if (!forceRefresh && settingsCache && (now - settingsCacheTime < SETTINGS_CACHE_TTL)) {
+      return Promise.resolve({ data: { data: settingsCache } });
+    }
+    if (!forceRefresh && settingsPromise) {
+      return settingsPromise;
+    }
+    settingsPromise = api.get('/settings')
+      .then((res) => {
+        settingsCache = res.data?.data;
+        settingsCacheTime = Date.now();
+        settingsPromise = null;
+        return res;
+      })
+      .catch((err) => {
+        settingsPromise = null;
+        throw err;
+      });
+    return settingsPromise;
+  },
+  clearCache: () => {
+    settingsCache = null;
+    settingsPromise = null;
+    settingsCacheTime = 0;
+  }
 };
 
 export const adminService = {

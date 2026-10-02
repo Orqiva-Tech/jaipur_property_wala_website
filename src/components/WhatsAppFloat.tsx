@@ -1,19 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { settingsService } from '../services/api';
-import { WebsiteSettings } from '../types';
+import React from 'react';
+import { useSettings } from '../context/SettingsContext';
 
 export const WhatsAppFloat: React.FC = () => {
-  const [settings, setSettings] = useState<WebsiteSettings | null>(null);
-
-  useEffect(() => {
-    settingsService.getSettings()
-      .then((res: any) => {
-        if (res.data?.data) {
-          setSettings(res.data.data);
-        }
-      })
-      .catch((err) => console.warn('WhatsAppFloat settings load error:', err));
-  }, []);
+  const { settings } = useSettings();
 
   const rawPhone = settings?.phone || settings?.alternatePhone || '';
   const cleanPhone = rawPhone.replace(/[^0-9+]/g, '');

@@ -1,21 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
-import { settingsService } from '../services/api';
-import { WebsiteSettings } from '../types';
+import { useSettings } from '../context/SettingsContext';
 
 export const Footer: React.FC = () => {
-  const [settings, setSettings] = useState<WebsiteSettings | null>(null);
-
-  useEffect(() => {
-    settingsService.getSettings()
-      .then((res: any) => {
-        if (res.data?.data) {
-          setSettings(res.data.data);
-        }
-      })
-      .catch((err) => console.warn('Footer settings load error:', err));
-  }, []);
+  const { settings } = useSettings();
 
   const phone = settings?.phone || settings?.alternatePhone || '';
   const cleanPhone = phone.replace(/[^0-9+]/g, '');

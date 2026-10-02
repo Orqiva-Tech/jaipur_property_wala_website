@@ -24,14 +24,15 @@ import {
   Clock,
   Building
 } from 'lucide-react';
-import { propertyService, enquiryService, settingsService, formatImageUrl } from '../services/api';
-import { Property, WebsiteSettings } from '../types';
+import { propertyService, enquiryService, formatImageUrl } from '../services/api';
+import { Property } from '../types';
 import { PropertyCard } from '../components/PropertyCard';
+import { useSettings } from '../context/SettingsContext';
 
 export const PropertyDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const [property, setProperty] = useState<Property | null>(null);
-  const [settings, setSettings] = useState<WebsiteSettings | null>(null);
+  const { settings } = useSettings();
   const [related, setRelated] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -72,9 +73,6 @@ export const PropertyDetailPage: React.FC = () => {
     };
 
     fetchDetail();
-    settingsService.getSettings()
-      .then((res: any) => setSettings(res.data?.data || null))
-      .catch(() => {});
     window.scrollTo(0, 0);
   }, [slug]);
 

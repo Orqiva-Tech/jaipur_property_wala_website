@@ -1,16 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, MessageCircle, Send, CheckCircle2, AlertCircle, ShieldCheck } from 'lucide-react';
-import { enquiryService, settingsService } from '../services/api';
-import { WebsiteSettings } from '../types';
+import { enquiryService } from '../services/api';
+import { useSettings } from '../context/SettingsContext';
 
 export const ContactPage: React.FC = () => {
-  const [settings, setSettings] = useState<WebsiteSettings | null>(null);
-
-  useEffect(() => {
-    settingsService.getSettings()
-      .then((res: any) => setSettings(res.data?.data || null))
-      .catch(() => {});
-  }, []);
+  const { settings } = useSettings();
 
   const [formData, setFormData] = useState({
     name: '',

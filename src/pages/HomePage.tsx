@@ -17,10 +17,11 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
-import { propertyService, blogService, galleryService, settingsService, formatImageUrl } from '../services/api';
+import { propertyService, blogService, galleryService, formatImageUrl } from '../services/api';
 import { Property, Blog, GalleryItem } from '../types';
 import { PropertyCard } from '../components/PropertyCard';
 import { HeroSearch } from '../components/HeroSearch';
+import { useSettings } from '../context/SettingsContext';
 
 interface HomePageProps {
   onOpenEnquiry: (property?: Property) => void;
@@ -31,7 +32,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
   const [latestTownships, setLatestTownships] = useState<Property[]>([]);
   const [recentBlogs, setRecentBlogs] = useState<Blog[]>([]);
   const [galleryPreview, setGalleryPreview] = useState<GalleryItem[]>([]);
-  const [settings, setSettings] = useState<any>(null);
+  const { settings } = useSettings();
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -50,6 +51,31 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
     subtitle: 'Buy residential and commercial plots starting from ₹15 Lakhs with spot registry and 80% pre-approved bank loans. Prime schemes in Jagatpura, Mahindra SEZ, Tonk Road & Ajmer Expressway.'
   };
 
+  const fallbackAboutSection = {
+    badge: 'About Our Company',
+    title: 'Why Choose Jaipur Property Wala?',
+    description: 'Jaipur Property Wala (Jaipur JDA Plots Colonizers & Developers) has established an unmatched benchmark of credibility across Rajasthan. We protect your hard-earned investment by offering only clear-title, JDA-approved schemes with direct spot registry and zero hidden charges.',
+    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1000&q=80',
+    imageTag: 'Authentic Jaipur Roots',
+    imageQuote: '“Estate brings together all the essentials of modern living with features that ensure comfort, safety, and lasting value.”',
+    experienceYears: '20+ Years',
+    experienceText: 'Pioneering Safe JDA Land Ownership in Jaipur',
+    points: [
+      {
+        title: 'Guaranteed Capital Appreciation:',
+        description: 'Planned JDA sectors in Jagatpura, SEZ, and Tonk Road have consistently generated high capital gains.'
+      },
+      {
+        title: 'Total Construction Flexibility:',
+        description: 'Construct your custom dream villa immediately, lease commercial spaces, or hold the clear-title plot for your family.'
+      },
+      {
+        title: '100% Security & 80% Bank Loan:',
+        description: 'All properties feature complete 90-A revenue conversion with instant loans supported by SBI, HDFC, and ICICI.'
+      }
+    ]
+  };
+
   const effectiveHero = settings?.hero || fallbackHero;
   // If user chose 'images', strictly render images slider. Only play video if mediaType is explicitly 'video'
   const heroMediaType = (effectiveHero?.mediaType === 'video' && effectiveHero?.videoUrl) ? 'video' : 'images';
@@ -59,21 +85,24 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
   const activeHeroImages = heroImages.length > 0 ? heroImages : defaultHeroImages;
   const heroVideoUrl = effectiveHero?.videoUrl;
 
+  const effectiveAbout = settings?.aboutSection || fallbackAboutSection;
+  const aboutPoints = (effectiveAbout.points && effectiveAbout.points.length > 0)
+    ? effectiveAbout.points
+    : fallbackAboutSection.points;
+
   useEffect(() => {
     const fetchHomeData = async () => {
       try {
-        const [propsRes, latestPropsRes, blogsRes, galleryRes, settingsRes] = await Promise.all([
+        const [propsRes, latestPropsRes, blogsRes, galleryRes] = await Promise.all([
           propertyService.getFeatured(),
           propertyService.getAll({ limit: 3 }),
           blogService.getAll({ limit: 3 }),
-          galleryService.getAll(),
-          settingsService.getSettings().catch(() => ({ data: { data: null } }))
+          galleryService.getAll()
         ]);
         setFeaturedProperties(propsRes.data.data || []);
         setLatestTownships(latestPropsRes.data.data?.slice(0, 3) || []);
         setRecentBlogs(blogsRes.data.data?.slice(0, 3) || []);
         setGalleryPreview(galleryRes.data.data?.slice(0, 4) || []);
-        setSettings(settingsRes.data?.data || null);
       } catch (error) {
         console.error('Error loading homepage data', error);
       } finally {
@@ -311,25 +340,27 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
             <div className="lg:col-span-6 relative">
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-stone-100">
                 <img
-                  src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1000&q=80"
-                  alt="Jaipur Property Wala"
+                  src={formatImageUrl(effectiveAbout.image || fallbackAboutSection.image)}
+                  alt={effectiveAbout.title || fallbackAboutSection.title}
                   className="w-full h-[420px] object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-forest-950/95 via-forest-950/30 to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6 text-white space-y-1">
                   <span className="text-xs uppercase tracking-widest text-gold-400 font-bold block">
-                    Authentic Jaipur Roots
+                    {effectiveAbout.imageTag || fallbackAboutSection.imageTag}
                   </span>
                   <p className="text-base font-editorial font-bold italic leading-snug">
-                    “Estate brings together all the essentials of modern living with features that ensure comfort, safety, and lasting value.”
+                    {effectiveAbout.imageQuote || fallbackAboutSection.imageQuote}
                   </p>
                 </div>
 
                 {/* Experience Callout Badge (Contained safely inside image wrapper) */}
                 <div className="absolute bottom-4 right-4 bg-forest-950 text-white p-4 sm:p-5 rounded-2xl shadow-2xl border-2 border-gold-500/60 max-w-[200px]">
-                  <span className="text-2xl sm:text-3xl font-bold font-editorial text-gold-400 block">20+ Years</span>
+                  <span className="text-2xl sm:text-3xl font-bold font-editorial text-gold-400 block">
+                    {effectiveAbout.experienceYears || fallbackAboutSection.experienceYears}
+                  </span>
                   <span className="text-[11px] text-gray-200 font-medium leading-tight block">
-                    Pioneering Safe JDA Land Ownership in Jaipur
+                    {effectiveAbout.experienceText || fallbackAboutSection.experienceText}
                   </span>
                 </div>
               </div>
@@ -339,41 +370,27 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
             <div className="lg:col-span-6 space-y-6">
               <div className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-gold-800 bg-gold-100 border border-gold-300 px-3.5 py-1 rounded-full">
                 <Award className="w-4 h-4 text-gold-600" />
-                <span>About Our Company</span>
+                <span>{effectiveAbout.badge || fallbackAboutSection.badge}</span>
               </div>
 
               <h2 className="text-2xl sm:text-4xl font-bold font-editorial text-forest-950 leading-tight">
-                Why Choose Jaipur Property Wala?
+                {effectiveAbout.title || fallbackAboutSection.title}
               </h2>
 
-              <p className="text-sm sm:text-base text-charcoal-800 leading-relaxed font-normal">
-                Jaipur Property Wala (Jaipur JDA Plots Colonizers & Developers) has established an unmatched benchmark of credibility across Rajasthan. We protect your hard-earned investment by offering only clear-title, JDA-approved schemes with direct spot registry and zero hidden charges.
+              <p className="text-sm sm:text-base text-charcoal-800 leading-relaxed font-normal whitespace-pre-line">
+                {effectiveAbout.description || fallbackAboutSection.description}
               </p>
 
               <div className="space-y-3.5 pt-1">
-                <div className="flex items-start space-x-3">
-                  <CheckCircle2 className="w-5 h-5 text-forest-800 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="text-sm font-bold text-forest-950">Guaranteed Capital Appreciation:</h4>
-                    <p className="text-xs text-charcoal-700">Planned JDA sectors in Jagatpura, SEZ, and Tonk Road have consistently generated high capital gains.</p>
+                {aboutPoints.map((pt: any, idx: number) => (
+                  <div key={idx} className="flex items-start space-x-3">
+                    <CheckCircle2 className="w-5 h-5 text-forest-800 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-sm font-bold text-forest-950">{pt.title}</h4>
+                      <p className="text-xs text-charcoal-700">{pt.description}</p>
+                    </div>
                   </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <CheckCircle2 className="w-5 h-5 text-forest-800 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="text-sm font-bold text-forest-950">Total Construction Flexibility:</h4>
-                    <p className="text-xs text-charcoal-700">Construct your custom dream villa immediately, lease commercial spaces, or hold the clear-title plot for your family.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <CheckCircle2 className="w-5 h-5 text-forest-800 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="text-sm font-bold text-forest-950">100% Security & 80% Bank Loan:</h4>
-                    <p className="text-xs text-charcoal-700">All properties feature complete 90-A revenue conversion with instant loans supported by SBI, HDFC, and ICICI.</p>
-                  </div>
-                </div>
+                ))}
               </div>
 
               <div className="pt-3 flex flex-wrap items-center gap-4">

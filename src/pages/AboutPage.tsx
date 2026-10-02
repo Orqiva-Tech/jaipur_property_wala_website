@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Award, Target, Eye, CheckCircle2, Phone, MapPin, Landmark, Users, ArrowRight } from 'lucide-react';
-import { settingsService } from '../services/api';
+import { useSettings } from '../context/SettingsContext';
 
 export const AboutPage: React.FC = () => {
-  const [settings, setSettings] = useState<any>(null);
-
-  useEffect(() => {
-    settingsService.getSettings()
-      .then((res: any) => setSettings(res.data?.data || null))
-      .catch(() => {});
-  }, []);
+  const { settings } = useSettings();
   return (
     <div className="bg-[#F8F9F8] min-h-screen py-10 sm:py-16 space-y-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">

@@ -13,8 +13,9 @@ import {
   Building2
 } from 'lucide-react';
 
-import { locationService, settingsService } from '../services/api';
-import { LocationItem, WebsiteSettings } from '../types';
+import { locationService, formatImageUrl } from '../services/api';
+import { LocationItem } from '../types';
+import { useSettings } from '../context/SettingsContext';
 
 interface HeaderProps {
   onOpenEnquiry?: () => void;
@@ -25,7 +26,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
   const [isPropertyDropdownOpen, setIsPropertyDropdownOpen] = useState(false);
   const [isMobilePropAccordionOpen, setIsMobilePropAccordionOpen] = useState(false);
   const [dynamicLocations, setDynamicLocations] = useState<LocationItem[]>([]);
-  const [settings, setSettings] = useState<WebsiteSettings | null>(null);
+  const { settings } = useSettings();
   const location = useLocation();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
@@ -62,14 +63,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
         }
       })
       .catch((err: any) => console.error('Error fetching locations in header', err));
-
-    settingsService.getSettings()
-      .then((res: any) => {
-        if (res.data?.data) {
-          setSettings(res.data.data);
-        }
-      })
-      .catch((err: any) => console.error('Error fetching settings in header', err));
   }, []);
 
   // Close dropdown on outside click
@@ -89,14 +82,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
     setIsPropertyDropdownOpen(false);
   }, [location.pathname, location.search]);
 
-  const cityLocations = dynamicLocations.length > 0
-    ? dynamicLocations.map(loc => ({ city: loc.name }))
-    : [
-      { city: 'Jaipur' },
-      { city: 'Ajmer' },
-      { city: 'Kishangarh' },
-      { city: 'Mumbai' }
-    ];
+  const cityLocations = dynamicLocations.map(loc => ({ city: loc.name }));
 
   const isActive = (path: string) => {
     if (path === '/' && location.pathname === '/') return true;
@@ -108,9 +94,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
 
   return (
     <>
-      {/* Top Heritage Notification & Contact Bar (Normal flow - SCROLLS naturally with page, NOT fixed) */}
-      <div className="bg-forest-950 text-ivory text-xs py-1.5 px-3 sm:px-6 lg:px-8 border-b border-forest-900 w-full">
-        <div className="w-full flex flex-wrap justify-between items-center gap-2">
+      {/* Top Heritage Notification & Contact Bar */}
+      <div className="bg-forest-950 text-ivory text-xs py-1.5 px-4 sm:px-6 lg:px-8 border-b border-forest-900 w-full">
+        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
           <div className="flex items-center space-x-4 sm:space-x-6">
             <a
               href={`tel:${(settings?.phone || settings?.alternatePhone || '09828226566').replace(/[^0-9+]/g, '')}`}
@@ -132,29 +118,28 @@ export const Header: React.FC<HeaderProps> = ({ onOpenEnquiry }) => {
             </div>
           </div>
 
-          <div className="flex items-center space-x-3 sm:space-x-4">
-            <div className="flex items-center space-x-1.5 text-gold-400 font-semibold">
-              <ShieldCheck className="w-4 h-4 text-gold-500" />
-              <span className="text-[11px] uppercase tracking-wider">
-                {dynamicLocations.length > 0
-                  ? dynamicLocations.map(l => l.name).join(' • ')
-                  : 'Jaipur • Ajmer • Kishangarh • Mumbai'}
-              </span>
+          {dynamicLocations.length > 0 && (
+            <div className="flex items-center space-x-3 sm:space-x-4">
+              <div className="flex items-center space-x-1.5 text-gold-400 font-semibold">
+                <ShieldCheck className="w-4 h-4 text-gold-500" />
+                <span className="text-[11px] uppercase tracking-wider">
+                  {dynamicLocations.map(l => l.name).join(' • ')}
+                </span>
+              </div>
             </div>
-
-          </div>
+          )}
         </div>
       </div>
 
-      {/* Main Sticky Navigation Bar (Edges touch full width left & right) */}
+      {/* Main Sticky Navigation Bar (Aligned with max-w-7xl) */}
       <header ref={headerRef} className="sticky top-0 z-50 bg-white border-b border-stone-200 shadow-xs">
-        <div className="w-full px-3 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
 
-            {/* Logo & Brand Identity (Aligned left) */}
+            {/* Logo & Brand Identity */}
             <Link to="/" className="flex items-center space-x-2.5 sm:space-x-3 group shrink-0">
               <img
-                src="/logo.png"
+                src={settings?.logoUrl ? formatImageUrl(settings.logoUrl) : '/logo.png'}
                 alt="Jaipur Property Wala Logo"
                 className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-gold-400 object-cover shadow-xs group-hover:scale-105 transition-transform duration-200"
               />
