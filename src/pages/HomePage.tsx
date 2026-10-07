@@ -95,12 +95,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
       try {
         const [propsRes, latestPropsRes, blogsRes, galleryRes] = await Promise.all([
           propertyService.getFeatured(),
-          propertyService.getAll({ limit: 3 }),
+          propertyService.getAll({ limit: 8 }),
           blogService.getAll({ limit: 3 }),
           galleryService.getAll()
         ]);
         setFeaturedProperties(propsRes.data.data || []);
-        setLatestTownships(latestPropsRes.data.data?.slice(0, 3) || []);
+        setLatestTownships(latestPropsRes.data.data || []);
         setRecentBlogs(blogsRes.data.data?.slice(0, 3) || []);
         setGalleryPreview(galleryRes.data.data?.slice(0, 4) || []);
       } catch (error) {
@@ -474,53 +474,88 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
       </section>
 
       {/* SECTION F: Featured Schemes Showcase */}
-      <section className="bg-forest-950 text-white py-16 sm:py-20 border-y-2 border-gold-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span className="text-xs font-bold uppercase tracking-widest text-gold-400 block">
-              Signature Plotted Developments
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-bold font-editorial text-white">
-              Ongoing & Ready-to-Build Townships
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-200">
-              Explore prime projects with ready possession, underground utilities, and direct highway connectivity.
-            </p>
-          </div>
+      {(() => {
+        const townshipConfig = settings?.townshipShowcase;
+        const isCustomMode = townshipConfig?.mode === 'custom' &&
+          Array.isArray(townshipConfig?.selectedProperties) &&
+          townshipConfig.selectedProperties.length > 0;
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {((latestTownships && latestTownships.length > 0) ? latestTownships.slice(0, 3) : [
-              {
-                _id: 'default-1',
-                title: 'VRB World City',
-                tagline: 'Ajmer Expressway Corridor',
-                description: 'Planned mega township with commercial complexes, meditation centers, and sizes from 111 to 200+ Sq. Yards.',
-                location: { area: 'Mahindra SEZ', city: 'Jaipur' },
-                images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'],
-                slug: 'vrb-world-city-mahendra-sez-jaipur',
-                status: 'Ongoing'
-              },
-              {
-                _id: 'default-2',
-                title: 'Bombay Hospital Plots',
-                tagline: 'Near Mahal Road & Ring Road',
-                description: 'Ready-to-move residential plots surrounded by coaching institutions, hospitals, and 15 mins to Airport.',
-                location: { area: 'Jagatpura', city: 'Jaipur' },
-                images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'],
-                slug: 'jaipur-bombay-hospital-plots-jagatpura',
-                status: 'Ready Possession'
-              },
-              {
-                _id: 'default-3',
-                title: 'Riyasat Eco Park',
-                tagline: 'Main Highway Corridor',
-                description: 'Serene nature living with herbal plantations, gated compound, sweet water supply, and high-yield appreciation.',
-                location: { area: 'Tonk Road Vatika', city: 'Jaipur' },
-                images: ['https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80'],
-                slug: 'riyasat-eco-park-tonk-road-vatika',
-                status: 'New Launch'
+        const fallbackTownships = [
+          {
+            _id: 'default-1',
+            title: 'VRB World City',
+            tagline: 'Ajmer Expressway Corridor',
+            description: 'Planned mega township with commercial complexes, meditation centers, and sizes from 111 to 200+ Sq. Yards.',
+            location: { area: 'Mahindra SEZ', city: 'Jaipur' },
+            images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'],
+            slug: 'vrb-world-city-mahendra-sez-jaipur',
+            status: 'Ongoing'
+          },
+          {
+            _id: 'default-2',
+            title: 'Bombay Hospital Plots',
+            tagline: 'Near Mahal Road & Ring Road',
+            description: 'Ready-to-move residential plots surrounded by coaching institutions, hospitals, and 15 mins to Airport.',
+            location: { area: 'Jagatpura', city: 'Jaipur' },
+            images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'],
+            slug: 'jaipur-bombay-hospital-plots-jagatpura',
+            status: 'Ready Possession'
+          },
+          {
+            _id: 'default-3',
+            title: 'Riyasat Eco Park',
+            tagline: 'Main Highway Corridor',
+            description: 'Serene nature living with herbal plantations, gated compound, sweet water supply, and high-yield appreciation.',
+            location: { area: 'Tonk Road Vatika', city: 'Jaipur' },
+            images: ['https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=800&q=80'],
+            slug: 'riyasat-eco-park-tonk-road-vatika',
+            status: 'New Launch'
+          }
+        ];
+
+        let effectiveTownships: any[] = [];
+        if (isCustomMode) {
+          const customList = (townshipConfig?.selectedProperties || [])
+            .map((item: any) => {
+              if (typeof item === 'object' && item !== null && item.title) {
+                return item;
               }
-            ]).map((project: any, idx: number) => (
+              const id = typeof item === 'string' ? item : item?._id;
+              return latestTownships.find((p) => p._id === id);
+            })
+            .filter(Boolean);
+
+          const chosenIds = new Set(customList.map((p: any) => p._id));
+          const supplement = latestTownships.filter((p) => !chosenIds.has(p._id));
+          effectiveTownships = [...customList, ...supplement].slice(0, 3);
+        } else {
+          effectiveTownships = (latestTownships && latestTownships.length > 0)
+            ? latestTownships.slice(0, 3)
+            : [];
+        }
+
+        const finalTownships = effectiveTownships.length > 0 ? effectiveTownships : fallbackTownships;
+        const townshipBadge = townshipConfig?.badge || 'Signature Plotted Developments';
+        const townshipTitle = townshipConfig?.title || 'Ongoing & Ready-to-Build Townships';
+        const townshipSubtitle = townshipConfig?.subtitle || 'Explore prime projects with ready possession, underground utilities, and direct highway connectivity.';
+
+        return (
+          <section className="bg-forest-950 text-white py-16 sm:py-20 border-y-2 border-gold-600">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-gold-400 block">
+                  {townshipBadge}
+                </span>
+                <h2 className="text-2xl sm:text-4xl font-bold font-editorial text-white">
+                  {townshipTitle}
+                </h2>
+                <p className="text-xs sm:text-sm text-gray-200">
+                  {townshipSubtitle}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {finalTownships.map((project: any, idx: number) => (
               <div
                 key={project._id || project.slug || idx}
                 className="bg-forest-900 rounded-2xl overflow-hidden border border-forest-800 p-6 space-y-4 hover:border-gold-500/50 transition-all flex flex-col justify-between"
@@ -564,6 +599,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenEnquiry }) => {
           </div>
         </div>
       </section>
+        );
+      })()}
 
       {/* SECTION G: Real Ground Gallery Highlights */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
