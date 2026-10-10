@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, MessageCircle, Send, CheckCircle2, AlertCircle, ShieldCheck } from 'lucide-react';
 import { enquiryService } from '../services/api';
 import { useSettings } from '../context/SettingsContext';
+import { trackLeadFormConversion } from '../services/googleAds';
 
 export const ContactPage: React.FC = () => {
   const { settings } = useSettings();
@@ -26,10 +27,18 @@ export const ContactPage: React.FC = () => {
     setError('');
 
     try {
-      await enquiryService.create({
+      const response = await enquiryService.create({
         ...formData,
         source: 'Contact Us Page'
       });
+
+      // Fire Google Ads conversion only AFTER backend confirms successful enquiry persistence
+      const savedEnquiryId = response?.data?.data?.id || response?.data?.data?._id;
+      trackLeadFormConversion({
+        transactionId: savedEnquiryId,
+        source: 'contact_page'
+      });
+
       setSuccess(true);
       setFormData({
         name: '',
@@ -217,7 +226,7 @@ export const ContactPage: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form id="contact-lead-form" name="Submit lead form" onSubmit={handleSubmit} className="space-y-4">
                   {error && (
                     <div className="p-3 bg-red-50 border border-red-200 text-red-800 rounded-lg text-xs flex items-center space-x-2">
                       <AlertCircle className="w-4 h-4 flex-shrink-0" />

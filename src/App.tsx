@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { trackPageView } from './services/googleAds';
 
 // Components
 import { Header } from './components/Header';
@@ -20,6 +21,16 @@ import { ContactPage } from './pages/ContactPage';
 import { PrivacyTerms } from './pages/PrivacyTerms';
 import { Property } from './types';
 import { SettingsProvider } from './context/SettingsContext';
+
+const GoogleAdsRouteTracker: React.FC = () => {
+  const location = useLocation();
+
+  React.useEffect(() => {
+    trackPageView(location.pathname + location.search);
+  }, [location]);
+
+  return null;
+};
 
 const PublicLayout: React.FC<{ children: React.ReactNode; onOpenEnquiry: (p?: Property) => void }> = ({
   children,
@@ -47,7 +58,8 @@ export const App: React.FC = () => {
   return (
     <SettingsProvider>
       <Router>
-      <Routes>
+        <GoogleAdsRouteTracker />
+        <Routes>
         {/* Admin Redirect to Dedicated Standalone Admin Portal */}
         <Route
           path="/admin/*"
